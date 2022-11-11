@@ -39,6 +39,9 @@ export const todoReducer = (state,action)=>{
 
         case 'TASKTOEDIT': //Details of the tasks the user wants to edit
             return {...state,taskToEdit:action.payload}
+
+        case 'JUSTADDED': //Details of the tasks the user wants to edit
+            return {...state,taskJustAdded:action.payload}  
         default :
             return state
     }
@@ -47,7 +50,8 @@ export const todoReducer = (state,action)=>{
 export const TodoContextProvider = ({children})=>{
     const [state,dispatch]=useReducer(todoReducer,{
     userTasks:null,
-    taskToEdit:null
+    taskToEdit:null,
+    taskJustAdded:null
    })
    console.log("Tasks:" ,state)
    return(

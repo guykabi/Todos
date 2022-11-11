@@ -1,4 +1,4 @@
-import axios from 'axios'
+
 import './createTask.css'
 import moment from "moment";
 import Modal from '../../../UI/Modal/Modal';
@@ -55,13 +55,13 @@ const confirmNewTask =async()=>{//Sets the new task to the user tasks on the DB
   obj.Complete=false
 
   try{
-    const res = await addTask(obj) //Sends the new task to the DB
+    const res = await addTask(obj) //Add the new task to the DB
         if(res._id)
         {
          //Update the new data to the context with the new task that just been added
-         ctx.dispatch({type:'ADDEDTASK',payload:res})
-         setShowFinal(false)//Remove the popup message
-         setIsNewTask(false)//Switch the screen to the start task screen
+          ctx.dispatch({type:'ADDEDTASK',payload:res})
+          setShowFinal(false)//Remove the popup message
+          setIsNewTask(false)//Switch the screen to the start task screen
         }
         else{
           setIsError(true)

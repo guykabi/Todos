@@ -2,7 +2,6 @@ import React,{useContext, useState,useEffect} from 'react'
 import { todoContext } from '../../../Context/TodoContext'
 import SingleTask from '../singleTask/singleTask'
 import './showTasks.css' 
-import { useRef } from 'react'
 import {customFilter} from '../../../utils/utils';
 
 
@@ -10,19 +9,21 @@ const ShowTasks = () => {
     const tasksCtx = useContext(todoContext)//User's tasks from the todo context
     let tasks = JSON.parse(localStorage.getItem('userTasks'))
     const [allUserTasks,setAllUserTasks]=useState(null)//All the tasks of the user that render into singleTask components
-    const scrollRef = useRef()
     const userData = JSON.parse(localStorage.getItem('userData'))
+    const [countTasks,setCountTasks]=useState(0)
 
    useEffect(()=>{
        if(tasksCtx.userTasks != null) 
         {  
+          
           //Updating the tasks on the localStorage with the new tasks
           localStorage.setItem('userTasks',JSON.stringify(tasksCtx.userTasks))
           setAllUserTasks(tasksCtx.userTasks)//Sets the new tasks array
+          setCountTasks(tasksCtx.userTasks.length)
         }
    },[tasksCtx.userTasks])//Trigger when task added/updated/deleted
+  
 
-   
     const sortBy  = (e)=>{ //Sorting the tasks by colors of importance
       if(e.target.value === '')
       {
@@ -50,7 +51,7 @@ const ShowTasks = () => {
    
   return (
     <div className='showTaskMainDiv'>
-        <h2>{userData.data.Name}'s  tasks</h2>
+        <h2>{userData.data.Name}'s  tasks   {`(${countTasks})`}</h2>
         <div>
           <input type="text" placeholder='Search task...' onChange={serachTask}/>
         </div>
@@ -72,9 +73,9 @@ const ShowTasks = () => {
           <input onChange={sortBy} type='radio' value='Red' name='Importance'/>
           </label>
         </div>
-        <div className='allTasks' ref={scrollRef}>
-          {allUserTasks&&allUserTasks.map((task,index)=>{
-            return <SingleTask key={index} {...task} />
+        <div className='allTasks'>
+          {allUserTasks&&allUserTasks.map((task,index)=>{ 
+             return <SingleTask  key={index} {...task} />  
           })}
         </div>
     </div>

@@ -1,9 +1,9 @@
 import './Login.css'
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import useLogin from '../../hooks/useLogin'
 import ClipLoader from 'react-spinners/ClipLoader';
-import { useEffect } from 'react';
+
 
 const Login = () => {
   const [credentials,setCredentials]= useState({})//Email and password that sends to the server for checking
