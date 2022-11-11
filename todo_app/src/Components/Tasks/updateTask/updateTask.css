@@ -1,0 +1,115 @@
+.taskToEdit{
+    background-color: rgba(231, 240, 240, 0.734);
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .editForm{
+    margin: 0 auto;
+    width: 70%;
+    padding: 1rem;
+  }
+  .editForm label{
+    font-weight: bold;
+  }
+  .editForm input{
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: rgba(240, 248, 255, 0);
+    padding: 1rem;
+    font-size: medium;
+  }
+  
+  .importanceLevel{
+    font-size: small;
+    margin-left: -10%;
+    margin-right: 4%;
+    text-decoration: underline;
+  }
+  
+  .greenRadio{
+      cursor: default;
+      border-radius: 40%;
+      margin-right: 5px;
+      background-color: green;
+      font-size: x-small;
+      padding: 1px;
+      color: rgba(250, 235, 215, 0);
+  }
+  
+  .greenColorData{
+    display: none;
+  } 
+  
+  .greenRadio:hover + .greenColorData{
+    display: block;
+    z-index: 10;
+    margin-left: 100px;
+    position: absolute;
+    margin-top: -6%;
+    margin-left: 10%;
+    background-color: white;
+    width: fit-content;
+    height: fit-content;
+    padding: 4px;
+    border: 1px solid black;
+    font-size: xx-small;
+  }
+  
+  .yellowRadio{
+    cursor: default;
+      border-radius: 40%;
+      margin-right: 5px;
+      background-color:rgb(220, 220, 80);
+      font-size: x-small;
+      padding: 1px;
+      color: rgba(250, 235, 215, 0);
+    } 
+    .yellowColorData{
+      display: none;
+    } 
+  
+    .yellowRadio:hover + .yellowColorData{
+      display: block;
+      z-index: 10;
+      margin-left: 100px;
+      position: absolute;
+      margin-top: -6%;
+      margin-left: 14%;
+      background-color: white;
+      width: fit-content;
+      height: fit-content;
+      padding: 4px;
+      border: 1px solid black;
+      font-size: xx-small;
+    }
+  
+    .redRadio{
+      cursor: default;
+      border-radius: 40%;
+      margin-right: 5px;
+      background-color:red;
+      font-size: x-small;
+      padding: 1px;
+      color: rgba(250, 235, 215, 0);
+    } 
+  
+    .redColorData{
+      display: none;
+    } 
+  
+    .redRadio:hover + .redColorData{
+      display: block;
+      z-index: 10;
+      margin-left: 100px;
+      position: absolute;
+      margin-top: -6%;
+      margin-left: 18%;
+      background-color: white;
+      width: fit-content;
+      height: fit-content;
+      padding: 4px;
+      border: 1px solid black;
+      font-size: xx-small;
+    }

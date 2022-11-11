@@ -1,0 +1,48 @@
+.mainSingleTask{
+    margin: 0 auto;
+    text-align: center;
+    padding: 8px;
+    width: 70%;
+    height: fit-content;
+    font-size: 80%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.mainSingleTask h3{
+    text-decoration: underline;
+}
+.editPencil::after{
+    cursor: pointer;
+    float: right;
+    z-index: 10;
+    position: relative;
+    top: 0;
+    right: 0;
+    content: '\2807';
+    font-size: 20px;      
+}
+
+.editOrDeleteDiv{
+    background-color: white;
+    z-index: 10;
+    position: relative;
+    text-align: center;
+    float: right;
+    margin-right: 0.5rem;
+    width:30%;
+    height:auto;
+    font-size: small;
+    border-radius: 4px;
+}
+.editOrDeleteDiv div{
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.6s;
+} 
+
+.editOrDeleteDiv div:hover{
+background-color: rgba(86, 134, 134, 0.746);
+}
