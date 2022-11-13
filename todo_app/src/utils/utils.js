@@ -37,6 +37,10 @@ const updateTask = async (id,body)=>{
        {
          return res.Data
        } 
+       if(res === 'Completed task added and deleted')
+       {
+         return res 
+       }
     }catch(err)
     {
        return err.message

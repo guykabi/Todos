@@ -7,6 +7,11 @@ import React from 'react';
 const Navbar = () => {
     const navigate = useNavigate()
     
+    const toHome = ()=>{
+        localStorage.clear()
+        navigate('/Home/tasks')
+      }
+
     const logout = ()=>{
       localStorage.clear()
       navigate('/')
@@ -25,7 +30,7 @@ const Navbar = () => {
             <NavIcon>
                 <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
             </NavIcon>
-            <NavText>
+            <NavText onClick={navigate('tasks')}>
                 Home
             </NavText>
         </NavItem>
@@ -34,16 +39,16 @@ const Navbar = () => {
                 <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-                Charts
+                History
             </NavText>
             <NavItem eventKey="charts/linechart">
                 <NavText>
-                    Line Chart
+                    Tasks completed
                 </NavText>
             </NavItem>
             <NavItem eventKey="charts/barchart">
                 <NavText>
-                    Bar Chart
+                    Tasks uncompleted
                 </NavText>
             </NavItem>
         </NavItem>

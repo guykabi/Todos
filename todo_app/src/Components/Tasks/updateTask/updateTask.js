@@ -39,25 +39,44 @@ const isTheSame = (e)=>{
        }
     }
     if(ctx.taskToEdit[name] !== value){
-     setUpdateDetails({...updateDetails,[name]:value}) 
-     setEnableBtn(true)
+      if(value === 'true')
+      {  
+        //Prepare the new object to send to the server
+        let obj = {...currentDetails}
+        obj.Complete = true
+        delete obj.createdAt
+        delete obj.updatedAt
+
+        setUpdateDetails(obj)
+        setEnableBtn(true)
+      }
+      else{
+         setUpdateDetails({...updateDetails,[name]:value}) 
+         setEnableBtn(true)
+      }
     }
     
  } 
  
  const sendUpdate = async(e)=>{
    e.preventDefault() 
+   
    try{
-
          let resp = await updateTask(ctx.taskToEdit._id,updateDetails)
        
-        if(resp._id)
+          if(resp._id)//If task was updated but not completed
+           {
+            ctx.dispatch({type:'UPDATETASK',payload:resp})//Update the new data to the context with the new task that just been added
+            props.onClose()//Switch to the start window
+           } 
+           if(resp === 'Completed task added and deleted')//When task completed
+           {
+            ctx.dispatch({type:'TASKTODELETE',payload:updateDetails._id})//Deleting the task that completed
+            
+            props.onClose()//Switch to the start window
+           }
+        else
          {
-          ctx.dispatch({type:'UPDATETASK',payload:resp})//Update the new data to the context with the new task that just been added
-          props.onClose()//Switch to the start window
-         }
-       else
-       {
            setIsErrorUpdate(true)//Error message
 
            let timer = setTimeout(()=>{

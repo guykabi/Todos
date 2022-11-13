@@ -15,11 +15,10 @@ const ShowTasks = () => {
    useEffect(()=>{
        if(tasksCtx.userTasks != null) 
         {  
-          
           //Updating the tasks on the localStorage with the new tasks
           localStorage.setItem('userTasks',JSON.stringify(tasksCtx.userTasks))
           setAllUserTasks(tasksCtx.userTasks)//Sets the new tasks array
-          setCountTasks(tasksCtx.userTasks.length)
+          setCountTasks(tasksCtx.userTasks.length)//Counts the number of tasks
         }
    },[tasksCtx.userTasks])//Trigger when task added/updated/deleted
   
@@ -40,9 +39,8 @@ const ShowTasks = () => {
       {
         setAllUserTasks(tasks)
       }
-      else{
-        console.log(tasks);
-        // let results = tasks.filter(t => Object.values(t).includes(e.target.value)) 
+      else{ 
+        //Function that search any substring in the tasks
         const results = customFilter(tasks, e.target.value)
         setAllUserTasks(results)
       }
@@ -53,7 +51,7 @@ const ShowTasks = () => {
     <div className='showTaskMainDiv'>
         <h2>{userData.data.Name}'s  tasks   {`(${countTasks})`}</h2>
         <div>
-          <input type="text" placeholder='Search task...' onChange={serachTask}/>
+          <input type="text" className='searchInput' placeholder='Search task...' onChange={serachTask}/>
         </div>
         <div className='sortedByDiv'>
           <label htmlFor="Importance" className='lables'>

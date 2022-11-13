@@ -1,4 +1,5 @@
 const taskModel = require('../models/taskModel')
+const userModel = require('../models/userModel')
 const express = require('express')
 const router = express.Router()  
 const jwt = require('jsonwebtoken')
@@ -24,7 +25,7 @@ router.get('/:id',async(req,resp,next)=>{
                 resp.status(200).json(tasks)
           }catch(err)
             {
-              return next(err)
+               next(err)
             }
         }
      })
@@ -45,15 +46,36 @@ router.post('/',async(req,resp,next)=>{ //Adding a new user
 
 
 router.patch('/:id',async(req,resp,next)=>{//Updates task
-  
-  try{
-      let data = await taskModel.findByIdAndUpdate(req.params.id,req.body,{new:true})
-      if(data) return resp.status(200).json({message:'Updated',Data:data})
-      if(!data) return resp.status(404).json("Such user don't found")
-  }catch(err)
+  //If task completed - add it to the completed tasks of the user
+  //and finally deletes it from the tasks
+  if(req.body.Complete === true)
   {
-    next(err)
+    try{   
+          const deleteTask = await taskModel.findByIdAndDelete(req.params.id)
+          if(deleteTask)//If the delete succeeded
+          { 
+             const taskComplete = await userModel.updateOne({ _id: req.body.userId}, 
+              {$push: {TasksCompleted:req.body}})
+            console.log(taskComplete)
+             if(taskComplete) return resp.status(200).json('Completed task added and deleted') 
+          } 
+    }catch(err)
+    {
+       next(err)
+    }
   }
+  else{
+
+     try{
+        let data = await taskModel.findByIdAndUpdate(req.params.id,req.body,{new:true})
+        if(data) return resp.status(200).json({message:'Updated',Data:data})
+        if(!data) return resp.status(404).json("Such user don't found")
+     }catch(err)
+       {
+        next(err)
+       }
+
+   }
 })  
 
 

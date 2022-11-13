@@ -1,4 +1,3 @@
-
 import './createTask.css'
 import moment from "moment";
 import Modal from '../../../UI/Modal/Modal';
@@ -50,7 +49,7 @@ const switchToNewTask = ()=>{ //Open the new task form
 const confirmNewTask =async()=>{//Sets the new task to the user tasks on the DB
    
   //Adding extra necessary fields
-  let obj = taskDetails
+  let obj = {...taskDetails}
   obj.userId=userData.data._id
   obj.Complete=false
 
@@ -89,6 +88,7 @@ const confirmNewTask =async()=>{//Sets the new task to the user tasks on the DB
 
 
 const setNewTask = ()=>{
+  ctx.dispatch({type:'TASKTOEDIT',payload:null})
   setIsToEdit(false)
 }
 

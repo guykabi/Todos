@@ -7,10 +7,23 @@ export const todoReducer = (state,action)=>{
     switch (action.type){
         case 'GETDATA'://Get the tasks on the initial upload of the app
             return {...state,userTasks:action.payload}
+
         case 'ADDEDTASK'://Add new task to the exsits tasks array
+
             let newArr = [...state.userTasks]
             //Finds the task that needs to complete after than the new task
-            let element = newArr.find(task => task.Upto > action.payload.Upto)
+            let element;
+            for(let i=0; i<newArr.length;i++)//Check the for the right position to insert the new task
+            { 
+             if(i != (newArr.length - 1))
+             {
+               if(newArr[i].Upto > action.payload.Upto > newArr[i+1].Upto)
+               {
+                  element = newArr[i+1] 
+                  return
+               }
+             }   
+            }
             //Finds the after task index
             let index = newArr.indexOf(element)
             //Insert the new task before the after task
@@ -31,6 +44,7 @@ export const todoReducer = (state,action)=>{
             return {userTasks:Arr}
 
         case 'TASKTODELETE':       
+
         let deleteArr = [...state.userTasks]
         //Filter a new arr without the deleted task
         let afterDeleteArr = deleteArr.filter(task => task._id !== action.payload)
@@ -42,6 +56,7 @@ export const todoReducer = (state,action)=>{
 
         case 'JUSTADDED': //Details of the tasks the user wants to edit
             return {...state,taskJustAdded:action.payload}  
+
         default :
             return state
     }

@@ -9,6 +9,11 @@
     margin-bottom: 1rem;
     margin-top: 1rem;
     text-align: left;
+    transition: 0.8s;
+} 
+
+.mainSingleTask:hover{
+    transform: scale(1.1);
 }
 
 .mainSingleTask h3{
