@@ -3,7 +3,7 @@ import Navbar from '../../UI/Navbar/Navbar'
 import { Outlet,useNavigate } from 'react-router'
 import React,{ useEffect,useContext,useState } from 'react'
 import {todoContext} from '../../Context/TodoContext'
-import { getUserData } from '../../utils/utils'
+import { getAllUserTasks } from '../../utils/utils'
 
 
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
       if(userData)//Check if there is token passed through the localStorgae
       {
         try{ 
-             let res = await getUserData(userData.data._id,userData.accessToken)
+             let res = await getAllUserTasks(userData.data._id,userData.accessToken)
              if(res)
                {  
                   localStorage.setItem('userTasks',JSON.stringify(res))//Sets the user's tasks to the local stroage

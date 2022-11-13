@@ -62,26 +62,26 @@ const isTheSame = (e)=>{
    e.preventDefault() 
    
    try{
-         let resp = await updateTask(ctx.taskToEdit._id,updateDetails)
+          let resp = await updateTask(ctx.taskToEdit._id,updateDetails)
        
           if(resp._id)//If task was updated but not completed
            {
             ctx.dispatch({type:'UPDATETASK',payload:resp})//Update the new data to the context with the new task that just been added
             props.onClose()//Switch to the start window
            } 
+
            if(resp === 'Completed task added and deleted')//When task completed
            {
             ctx.dispatch({type:'TASKTODELETE',payload:updateDetails._id})//Deleting the task that completed
-            
             props.onClose()//Switch to the start window
            }
         else
          {
-           setIsErrorUpdate(true)//Error message
+            setIsErrorUpdate(true)//Error message
 
-           let timer = setTimeout(()=>{
-           setIsErrorUpdate(false)
-          },3000)
+            let timer = setTimeout(()=>{
+            setIsErrorUpdate(false)
+           },3000)
  
           return () => {//Clears the setTimeout
            clearTimeout(timer);

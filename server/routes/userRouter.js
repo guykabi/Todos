@@ -5,15 +5,15 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-/*router.get('/:id',async(req,resp,next)=>{
+router.get('/:id',async(req,resp,next)=>{
     try{
        let data = await userModel.find(req.params.id)
-       if(data) return resp.status(200).json(data)
+       if(data) return resp.status(200).json({message:'User data',Data:data})
     }catch(err)
     {
-        return resp.status(500).json('Error occurred!')
+        next(err)
     }
-})  */
+}) 
 
 
 router.post('/auth',async(req,resp,next)=>{ //Check is user exists - if does return the user data and token

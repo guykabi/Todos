@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const getUserData =async (id,token)=>{
+const getAllUserTasks =async (id,token)=>{
     try{
         const {data:res} = await axios.get('/tasks/'+id,{
          headers: {
@@ -15,7 +15,20 @@ const getUserData =async (id,token)=>{
      {   
         return err.message
    }
-}   
+}    
+
+const getUserData = async (id) =>{
+   try{
+        const {data:res} = await axios.get('/tasks/'+id) 
+        if(res.message === 'User data')
+        {
+         return res.Data
+        }
+   }catch(err)
+   {
+        return err.message
+   }
+}
 
 const addTask =async (body)=>{
    try{
@@ -75,4 +88,4 @@ const taskToDeletete = async (id)=> {
      }
 }
 
-export {getUserData,addTask,updateTask, customFilter,taskToDeletete}
+export {getAllUserTasks,getUserData,addTask,updateTask, customFilter,taskToDeletete}

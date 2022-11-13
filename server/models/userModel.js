@@ -3,7 +3,6 @@ const {Schema} = mongoose
 const {hash} = require('bcryptjs')
 const bcrypt = require('bcryptjs/dist/bcrypt')
 
-
 const taskSchema =  new Schema({
     userId:String,
     Topic:String,
@@ -13,7 +12,7 @@ const taskSchema =  new Schema({
     Complete:Boolean
 },{timestamps:true})
 
-let userSchema = new Schema({
+const userSchema = new Schema({
     Name:String,
     Username:String,
     Password:String,
