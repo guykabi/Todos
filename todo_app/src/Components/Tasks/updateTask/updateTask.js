@@ -11,6 +11,7 @@ const [isErrorUpdate,setIsErrorUpdate]=useState(false)//State of the error messa
 const [currentDetails,setCurrentDetails]=useState(null)//State that save the details of the task to edit - uses for fill the form fields with initial values!
 const [updateDetails,setUpdateDetails]=useState(null)//The updated fiedls to update - only it!
 const [enableBtn,setEnableBtn]=useState(false)//Control the submit button activeness
+const [whenCompleteMark,setWhenCompleteMark]=useState(false)
 
 useEffect(()=>{
     if(ctx.taskToEdit != null)//Load the requested task to edit
@@ -18,7 +19,6 @@ useEffect(()=>{
       setCurrentDetails(ctx.taskToEdit)
       setEnableBtn(false) 
       setUpdateDetails(null)
-     
     }
    },[ctx.taskToEdit])
   
@@ -26,17 +26,34 @@ useEffect(()=>{
 //Checking if any detail changed - if indeed changed 
 //update the new updateDetails state which sends only the fields that has changed to the server
 const isTheSame = (e)=>{
+  
     const {name,value}=e.target
-    setCurrentDetails({...currentDetails,[name]:value})//Update only the current data that present to the user
-    if(ctx.taskToEdit[name] === value || !updateDetails )
+
+    //Update only the current data that present to the user within the fields
+    setCurrentDetails({...currentDetails,[name]:value})
+
+    if(ctx.taskToEdit[name].toString() === value || !updateDetails)
     {
-       setEnableBtn(false)//Unable the submit button
+      
        if(updateDetails)
-       {
-         const newUpdateDetails = {...updateDetails}
-         delete newUpdateDetails[name] //Deleting the field that return the same value as already exists
-         setUpdateDetails(newUpdateDetails)
-       }
+       {      
+            const newUpdateDetails = {...updateDetails}
+            delete newUpdateDetails[name] //Deleting the field that return the same value as already exists
+            setUpdateDetails(newUpdateDetails)
+
+            //When there is nothing chnged again - the state of update is ampty
+        if(Object.keys(updateDetails).length == 1)
+          { 
+            setEnableBtn(false)//Unable the submit button
+          } 
+          if(value === 'false')
+          { 
+            setUpdateDetails(null)//Clear the state when switch back to false
+            setWhenCompleteMark(false)//Switch off the diabled on each field
+            return setEnableBtn(false)
+          }
+       }  
+        
     }
     if(ctx.taskToEdit[name] !== value){
       if(value === 'true')
@@ -48,7 +65,8 @@ const isTheSame = (e)=>{
         delete obj.updatedAt
 
         setUpdateDetails(obj)
-        setEnableBtn(true)
+        setWhenCompleteMark(true)//Unable all the forn fields
+        setEnableBtn(true)//enable the submit button
       }
       else{
          setUpdateDetails({...updateDetails,[name]:value}) 
@@ -60,7 +78,6 @@ const isTheSame = (e)=>{
  
  const sendUpdate = async(e)=>{
    e.preventDefault() 
-   
    try{
           let resp = await updateTask(ctx.taskToEdit._id,updateDetails)
        
@@ -113,11 +130,11 @@ const selectField = options.map((o,index)=>{//Rendering options tags to the sele
      <div className='taskToEdit'><br/>
      {currentDetails&&<form onSubmit={sendUpdate} className='editForm'>
         <label htmlFor="Topic">Topic: </label>
-              <select required value={currentDetails.Topic} onChange={isTheSame} id='Topic' name="Topic">
+              <select required value={currentDetails.Topic} disabled={whenCompleteMark} onChange={isTheSame} id='Topic' name="Topic">
                 {selectField}
               </select> <br /><br />
         <label htmlFor="Task">Task: </label>
-        <input type="text" required id='Task' onChange={isTheSame} name='Task' value={currentDetails.Task}   checked={true} /><br /><br />
+        <input type="text" required id='Task' disabled={whenCompleteMark} onChange={isTheSame} name='Task' value={currentDetails.Task}   checked={true} /><br /><br />
         
         <span className='importanceLevel'>Choose importance level:</span>
               <span className='greenRadio'>gg</span>
@@ -125,28 +142,28 @@ const selectField = options.map((o,index)=>{//Rendering options tags to the sele
               <strong>Green</strong> means - task that is great to complete <br />
               and there is no pressure to finish!
               </span>
-              <input  onChange={isTheSame} type='radio' value="Green"  checked={currentDetails.Importance === 'Green'} name="Importance" required /> &nbsp;&nbsp;
+              <input  onChange={isTheSame} type='radio' disabled={whenCompleteMark} value="Green"  checked={currentDetails.Importance === 'Green'} name="Importance" required /> &nbsp;&nbsp;
               <span className='yellowRadio'>gg</span>
               <span className='yellowColorData'>
               <strong>Yellow</strong> means - task that need to be completed <br />
                in the near future!
               </span>
-              <input onChange={isTheSame} type='radio' value="Yellow"  name="Importance" checked={currentDetails.Importance === 'Yellow'}/>&nbsp;&nbsp;
+              <input onChange={isTheSame} type='radio' disabled={whenCompleteMark} value="Yellow"  name="Importance" checked={currentDetails.Importance === 'Yellow'}/>&nbsp;&nbsp;
               <span className='redRadio'>gg</span>
               <span className='redColorData'>
               <strong>Red</strong> means - task that is must be completed <br />
               as soon as possible!
               </span>
-              <input onChange={isTheSame} type='radio' value="Red" checked={currentDetails.Importance === 'Red'}  name="Importance" /> <br /> <br />
+              <input onChange={isTheSame} type='radio' disabled={whenCompleteMark} value="Red" checked={currentDetails.Importance === 'Red'}  name="Importance" /> <br /> <br />
 
         <label htmlFor="Upto">Up to: </label>
-        <input type="date" required id='Upto' name='Upto' value={currentDetails.Upto} onChange={isTheSame}   /><br /> <br />
+        <input type="date" required id='Upto' disabled={whenCompleteMark} name='Upto' value={currentDetails.Upto} onChange={isTheSame}   /><br /> <br />
 
         <label>Complete: </label>
         <span>No</span>&nbsp;
-        <input type="radio" required name='Complete' value={false}  onChange={isTheSame} checked={!JSON.parse(currentDetails.Complete)}   />
+        <input type="radio" required name='Complete' value='false'  onChange={isTheSame} checked={!JSON.parse(currentDetails.Complete)}   />
         <span>Yes</span>&nbsp;
-        <input type="radio"  name='Complete' value={true} onChange={isTheSame} checked={JSON.parse(currentDetails.Complete)}  />
+        <input type="radio"  name='Complete' value='true' onChange={isTheSame} checked={JSON.parse(currentDetails.Complete)}  />
         <br /> <br />
         {isErrorUpdate&&<span><strong>Unable to update task</strong></span>}<br/><br/>
         <button type='submit' disabled={!enableBtn}>Update</button>&nbsp;

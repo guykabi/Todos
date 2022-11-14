@@ -19,7 +19,7 @@ const getAllUserTasks =async (id,token)=>{
 
 const getUserData = async (id) =>{
    try{
-        const {data:res} = await axios.get('/tasks/'+id) 
+        const {data:res} = await axios.get('/users/'+id) 
         if(res.message === 'User data')
         {
          return res.Data
@@ -86,6 +86,39 @@ const taskToDeletete = async (id)=> {
      {
          return err.message
      }
+} 
+
+
+
+
+const checkPosition = (arr,task) =>{
+   console.log(arr)
+   for(let i=0; i<arr.length;i++)//Check the for the right position to insert the new task
+   { 
+      if(i !== (arr.length-1))
+       {       
+        
+        if(arr[i].Upto < task.Upto && task.Upto < arr[i+1].Upto)
+        { 
+           
+         //Finds the after task index
+         let index = arr.indexOf(arr[i+1])
+         //Insert the new task before the after task
+         arr.splice(index,0,task)
+         //Sets the context with new arrange array of tasks
+         return arr
+       }  
+
+     }   
+    if(i === (arr.length-1)){ 
+        //Insert the new task at the end
+         arr.push(task)
+        //Sets the context with new arrange array of tasks    
+         return arr
+     }
+   } 
 }
 
-export {getAllUserTasks,getUserData,addTask,updateTask, customFilter,taskToDeletete}
+export {getAllUserTasks,getUserData,addTask,
+   updateTask, customFilter,
+   taskToDeletete,checkPosition}

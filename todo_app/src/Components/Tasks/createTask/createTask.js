@@ -19,12 +19,12 @@ const CreateTask = () => {
  const today = moment().format('YYYY-MM-DD'); //Date of today for the date input
 
 
- useEffect(()=>{
+ /*useEffect(()=>{
   if(ctx.taskToEdit != null)//Load the requested task to edit
   {
     setIsToEdit(true)
   }
- },[ctx.taskToEdit])
+ },[ctx.taskToEdit])*/
 
  
 const handleTask = (e)=> //Sets the task fields
@@ -92,7 +92,7 @@ const setNewTask = ()=>{
   setIsToEdit(false)
 }
 
- if(isToEdit === true)
+ if(ctx.taskToEdit)
  { 
    return(<UpdateTask onClose={setNewTask} />)//The requested task form to edit
  } 

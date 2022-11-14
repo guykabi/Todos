@@ -1,16 +1,21 @@
 import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { useNavigate } from 'react-router'
-import React from 'react';
+import React, { useState } from 'react';
 
 
 const Navbar = () => {
     const navigate = useNavigate()
+    const [toggleState,setToggleState]=useState(false)
     
     const toHome = ()=>{
-        localStorage.clear()
-        navigate('/Home/tasks')
+        navigate('tasks')
+      } 
+
+      const toCompleteTasks = ()=>{
+        navigate('taskstrack')
       }
+
 
     const logout = ()=>{
       localStorage.clear()
@@ -19,18 +24,19 @@ const Navbar = () => {
 
   return (
     <div>
-        <SideNav
-    onSelect={(selected) => {
-        // Add your code here
-    }}
->
-    <SideNav.Toggle />
-    <SideNav.Nav defaultSelected="home">
+        <SideNav 
+         style={{'position':'fixed','background-color':'rgb(228, 86, 86)'}}
+         expanded={toggleState}
+         onToggle={(toggleState) => {
+            setToggleState(toggleState);
+        }}>
+       <SideNav.Toggle />
+       <SideNav.Nav  defaultSelected="home">
         <NavItem eventKey="home">
             <NavIcon>
                 <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
             </NavIcon>
-            <NavText onClick={navigate('tasks')}>
+            <NavText onClick={toHome}>
                 Home
             </NavText>
         </NavItem>
@@ -42,7 +48,7 @@ const Navbar = () => {
                 History
             </NavText>
             <NavItem eventKey="charts/linechart">
-                <NavText>
+                <NavText onClick={toCompleteTasks}>
                     Tasks completed
                 </NavText>
             </NavItem>

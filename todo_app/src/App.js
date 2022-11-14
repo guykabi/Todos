@@ -8,6 +8,7 @@ import React,{lazy,Suspense} from 'react'
 //For lazy load
 const Home = lazy(()=> import  ("./Components/Home/Home"))
 const Tasks = lazy(()=> import  ("./Components/Tasks/Tasks"))
+const TasksTracking = lazy(()=> import ("./Components/TasksTracking/tasksTracking"))
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
          <Route path="/" element={<Login/>}/>
          <Route path="/Home" element={<Home/>}>
            <Route path="tasks" element={<Tasks/>}/>
+           <Route path="taskstrack" element={<TasksTracking/>}/>
          </Route>
         </Routes>
         </Suspense>

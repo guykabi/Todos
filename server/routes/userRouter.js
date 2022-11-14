@@ -7,7 +7,7 @@ require('dotenv').config()
 
 router.get('/:id',async(req,resp,next)=>{
     try{
-       let data = await userModel.find(req.params.id)
+       let data = await userModel.findOne({_id:req.params.id})
        if(data) return resp.status(200).json({message:'User data',Data:data})
     }catch(err)
     {

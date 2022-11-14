@@ -23,7 +23,7 @@ const Home = () => {
                {  
                   localStorage.setItem('userTasks',JSON.stringify(res))//Sets the user's tasks to the local stroage
                   dispatch({type:'GETDATA',payload:res})//Set the user tasks to the todo context
-                  navigate('tasks') 
+                  navigate('tasks')
                }
          }catch(err)
            {   

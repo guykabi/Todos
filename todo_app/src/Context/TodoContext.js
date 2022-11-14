@@ -1,5 +1,5 @@
 import React,{ createContext,useReducer } from "react"; 
-
+import {checkPosition} from '../utils/utils'
 
 export const todoContext = createContext() 
 
@@ -11,37 +11,24 @@ export const todoReducer = (state,action)=>{
         case 'ADDEDTASK'://Add new task to the exsits tasks array
 
             let newArr = [...state.userTasks]
-            //Finds the task that needs to complete after than the new task
-            let element;
-            for(let i=0; i<newArr.length;i++)//Check the for the right position to insert the new task
-            { 
-             if(i != (newArr.length - 1))
-             {
-               if(newArr[i].Upto > action.payload.Upto > newArr[i+1].Upto)
-               {
-                  element = newArr[i+1] 
-                  return
-               }
-             }   
-            }
-            //Finds the after task index
-            let index = newArr.indexOf(element)
-            //Insert the new task before the after task
-            newArr.splice(index,0,action.payload)
-            //Sets the context with new arrange array of tasks
-            return {userTasks:newArr}
+            //Function to set the task on the right index base on the final date
+            let final = checkPosition(newArr,action.payload)
+            return {userTasks:final}
+            
         
-         case 'UPDATETASK':
+         case 'UPDATETASK'://Update the user's tasks
            
             let Arr = [...state.userTasks]
             //Finds the task that has updated
             let task = Arr.find(task => task._id === action.payload._id)
             //Finds the task index
             let taskIndex = Arr.indexOf(task)
-            //Replace the tasks with the updated one
-            Arr[taskIndex]=action.payload
+            //Remove the unupated task/previous one
+            Arr.splice(taskIndex,1)
+            //Function to set the task on the right index base on the final date
+            let final2 = checkPosition(Arr,action.payload)
             //Sets the context with new arrange array of tasks
-            return {userTasks:Arr}
+            return {userTasks:final2}
 
         case 'TASKTODELETE':       
 

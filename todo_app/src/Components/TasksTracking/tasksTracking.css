@@ -1,0 +1,18 @@
+.taskTrackingMainDiv{
+    text-align: center;
+    margin: 0 auto;
+    overflow-y: scroll;
+} 
+
+.oneTask{
+    display: inline-block;
+    margin: 0 auto;
+    padding:1rem;
+    border-radius: 8px;
+    border: none;
+    text-align: center;
+    margin: 0.6rem;
+    width: 30%;
+    height: fit-content;
+    box-shadow: 1px 1px 4px 4px rgba(57, 55, 55, 0.350);
+}
