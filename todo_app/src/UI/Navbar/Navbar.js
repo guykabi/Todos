@@ -25,7 +25,7 @@ const Navbar = () => {
   return (
     <div>
         <SideNav 
-         style={{'position':'fixed','background-color':'rgb(228, 86, 86)'}}
+         style={{'position':'fixed','backgroundColor':'rgb(228, 86, 86)'}}
          expanded={toggleState}
          onToggle={(toggleState) => {
             setToggleState(toggleState);
@@ -34,7 +34,7 @@ const Navbar = () => {
        <SideNav.Nav  defaultSelected="home">
         <NavItem eventKey="home">
             <NavIcon>
-                <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
+                <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em'}} />
             </NavIcon>
             <NavText onClick={toHome}>
                 Home
@@ -48,7 +48,7 @@ const Navbar = () => {
                 History
             </NavText>
             <NavItem eventKey="charts/linechart">
-                <NavText onClick={toCompleteTasks}>
+                <NavText  onClick={toCompleteTasks}>
                     Tasks completed
                 </NavText>
             </NavItem>

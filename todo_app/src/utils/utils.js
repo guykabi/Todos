@@ -92,12 +92,19 @@ const taskToDeletete = async (id)=> {
 
 
 const checkPosition = (arr,task) =>{
-   console.log(arr)
+   
    for(let i=0; i<arr.length;i++)//Check the for the right position to insert the new task
    { 
       if(i !== (arr.length-1))
        {       
         
+         if(i === 0 && arr[i].Upto > task.Upto )//If its the first element
+         { 
+            //Push to the beginning
+            arr.unshift(task)
+            return arr
+         }
+
         if(arr[i].Upto < task.Upto && task.Upto < arr[i+1].Upto)
         { 
            
@@ -110,6 +117,7 @@ const checkPosition = (arr,task) =>{
        }  
 
      }   
+     //If its the last element of the array
     if(i === (arr.length-1)){ 
         //Insert the new task at the end
          arr.push(task)

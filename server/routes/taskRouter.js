@@ -1,9 +1,22 @@
 const taskModel = require('../models/taskModel')
 const userModel = require('../models/userModel')
+const {handleCompleteness} = require('../utils')
 const express = require('express')
 const router = express.Router()  
 const jwt = require('jsonwebtoken')
 require('dotenv').config()  
+
+//Creates the current day foramt to compare which task is still valid
+const today = new Date();
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+
+const formattedToday = yyyy + '-' + mm + '-' + dd;
+ 
 
 
 router.get('/:id',async(req,resp,next)=>{
@@ -20,10 +33,31 @@ router.get('/:id',async(req,resp,next)=>{
         }
 
        else{
-          try{  
+          try{   
+                 
                 //Gets all the specific user tasks
                 const tasks = await taskModel.find({userId:req.params.id}).sort({Upto:1})
-                resp.status(200).json(tasks)
+                
+                //All tasks that are still valid
+                let validTasks = tasks.filter(t=> t.Upto >= formattedToday)
+
+                //All tasks that are not valid and yet to be complete
+                let invalidTasks = tasks.filter(t=> t.Upto < formattedToday)
+
+                if(invalidTasks.length > 0)//If there are any invalid tasks
+                {                 
+                    for await (const task of invalidTasks) {
+                      try{
+                        //Sends the invalid task in its turn to handling function
+                         await handleCompleteness(task,'TasksUnCompleted')
+                      }catch(err)
+                      {
+                         next(err)
+                      }                   
+                    }
+                 }
+
+               return resp.status(200).json(validTasks)
           }catch(err)
             {
                next(err)
@@ -38,7 +72,7 @@ router.post('/',async(req,resp,next)=>{ //Adding a new user
     const task = new taskModel(req.body)
     try{
            const data = await task.save()
-           resp.status(200).json({message:'Added Successfully',Data:data})
+           return resp.status(200).json({message:'Added Successfully',Data:data})
     }catch(err)
     {
        next(err)
@@ -52,14 +86,9 @@ router.patch('/:id',async(req,resp,next)=>{//Updates task
   if(req.body.Complete === true)
   {
     try{   
-          const deleteTask = await taskModel.findByIdAndDelete(req.params.id)
-          if(deleteTask)//If the delete succeeded
-          { 
-              const taskComplete = await userModel.updateOne({ _id: req.body.userId}, 
-              {$push: {TasksCompleted:req.body}})
-
-              if(taskComplete) return resp.status(200).json('Completed task added and deleted') 
-          } 
+          //Sends the completed task to handling function
+          let res = await handleCompleteness(req.body,'TasksCompleted')
+          if(res === 'Success') return resp.status(200).json('Completed task added and deleted')
     }catch(err)
     {
        next(err)

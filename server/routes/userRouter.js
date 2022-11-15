@@ -46,7 +46,7 @@ router.post('/',async(req,resp,next)=>{ //Adding a new user
     const user = new userModel(req.body)
     try{
            const data = await user.save()
-           resp.status(200).json({message:'Added Successfully',Data:data})
+           return resp.status(200).json({message:'Added Successfully',Data:data})
     }catch(err)
     {
            next(new Error('Error', err))
