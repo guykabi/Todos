@@ -103,6 +103,12 @@ const checkPosition = (arr,task) =>{
             //Push to the beginning
             arr.unshift(task)
             return arr
+         } 
+
+         if(arr[i].Upto === task.Upto && task.Upto < arr[i+1].Upto)
+         {
+            arr.splice(i+1,0,task)
+            return arr
          }
 
         if(arr[i].Upto < task.Upto && task.Upto < arr[i+1].Upto)
@@ -125,8 +131,45 @@ const checkPosition = (arr,task) =>{
          return arr
      }
    } 
+} 
+ 
+//Calculates the time between the creation and the complete of the task
+const timePassed = (start,end) =>{
+   //Subtracts the dates
+   let diff = Date.parse(end) - Date.parse(start)
+   let time;
+
+   if(( diff /  3600000  ) < 1)//If the time is less than a hour
+   {
+       time =  ( diff /  3600000 )
+   }
+   if(( diff /  3600000  ) > 1)//Greater than a hour
+   {
+      time = Math.floor(diff / 3600000)
+   }
+   
+   if(time > 24)
+   {     
+
+       let days = Math.floor(time/24)
+       return `${days} days`
+   }
+   if(1 < time && time < 24)
+   {    
+      return `${time} hours`
+   }
+   
+   if(time < 1)
+   {      
+      console.log(time)
+       let minuts = Math.floor(time*60)
+      return `${minuts} minuts`
+   }
+   
 }
 
+
+
 export {getAllUserTasks,getUserData,addTask,
-   updateTask, customFilter,
-   taskToDeletete,checkPosition}
+        updateTask, customFilter,
+        taskToDeletete,checkPosition,timePassed}

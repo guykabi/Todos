@@ -61,11 +61,10 @@ const isTheSame = (e)=>{
         //Prepare the new object to send to the server
         let obj = {...currentDetails}
         obj.Complete = true
-        delete obj.createdAt
-        delete obj.updatedAt
+        obj.OriginCreate = currentDetails.createdAt //Task date of creation field
 
         setUpdateDetails(obj)
-        setWhenCompleteMark(true)//Unable all the forn fields
+        setWhenCompleteMark(true)//Unable all the form fields
         setEnableBtn(true)//enable the submit button
       }
       else{

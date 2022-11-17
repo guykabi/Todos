@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import './tasksTracking.css'
 import {getUserData} from '../../utils/utils'
+import SingleCompleteTask from './singleCompleteTask/singleCompleteTask'
 
 
 const TasksTracking = () => { 
@@ -9,11 +10,7 @@ const TasksTracking = () => {
     const [userDetails,setUserDetails]=useState(null)
     const [isError,setIsError]=useState(false) 
 
-   const formatter = new Intl.DateTimeFormat("en-GB", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit"
-    });
+
    useEffect(()=>{
     const dataOfUser =async () => {
         try{
@@ -28,7 +25,9 @@ const TasksTracking = () => {
         }
     }
     dataOfUser()
-   },[])
+   },[]) 
+
+   
  
   if(isError)
   {
@@ -38,18 +37,15 @@ const TasksTracking = () => {
   }
 
   return (
+    <>
     <div className='taskTrackingMainDiv'>
          <h2>{userData.data.Name}'s past tasks</h2> <br /> 
          {userDetails&&userDetails.TasksCompleted.map((u,index)=>{
-           return <div className='oneTask' key={index}>
-            <h3>{u.Topic}</h3>
-            <div>
-              Completed on the  {formatter.format(Date.parse(u.createdAt))}
-            </div>
-            </div>
+           return <SingleCompleteTask key={index} props={u}/>
          })} <br />
          
     </div>
+    </>
   )
 }
 
