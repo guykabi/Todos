@@ -28,7 +28,7 @@ const SingleCompleteTask = (props) => {
             <h4>{props.props.Task}</h4>
               <div>
                 Completed on the  {formatter.format(Date.parse(props.props.createdAt))} <br />
-                Task completed in: {timeTaskPassed&&timeTaskPassed}
+                Completed in: {timeTaskPassed&&timeTaskPassed}
               </div>
             </div>
   )
