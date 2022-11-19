@@ -45,11 +45,15 @@ router.get('/:id',async(req,resp,next)=>{
                 let invalidTasks = tasks.filter(t=> t.Upto < formattedToday)
 
                 if(invalidTasks.length > 0)//If there are any invalid tasks
-                {                 
+                {          
+                    
                     for await (const task of invalidTasks) {
+                     //Rearrange the task before update before inserted to the DB
+                      let newTask = task._doc
+                      newTask._id = task._id.toString()
                       try{
                         //Sends the invalid task in its turn to handling function
-                         await handleCompleteness(task,'TasksUnCompleted')
+                         await handleCompleteness(newTask,'TasksUnCompleted')
                       }catch(err)
                       {
                          next(err)

@@ -14,20 +14,20 @@ const SingleCompleteTask = (props) => {
       
 
       useEffect(()=>{
-        if(props.props.OriginCreate)
+        if(props.taskData.OriginCreate)
         {   
           //Sends the start and end dates to calc function
-          let timeresult = timePassed(props.props.OriginCreate,props.props.createdAt)
+          let timeresult = timePassed(props.taskData.OriginCreate,props.taskData.createdAt)
           setTimeTaskPassed(timeresult)
         }
       },[])
 
   return (
     <div className='oneTask'>
-            <h3>{props.props.Topic}</h3> 
-            <h4>{props.props.Task}</h4>
+            <h3>{props.taskData.Topic}</h3> 
+            <h4>{props.taskData.Task}</h4>
               <div>
-                Completed on the  {formatter.format(Date.parse(props.props.createdAt))} <br />
+                Completed on the  {formatter.format(Date.parse(props.taskData.createdAt))} <br />
                 Completed in: {timeTaskPassed&&timeTaskPassed}
               </div>
             </div>

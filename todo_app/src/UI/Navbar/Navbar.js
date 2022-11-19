@@ -9,11 +9,20 @@ const Navbar = () => {
     const [toggleState,setToggleState]=useState(false)
     
     const toHome = ()=>{
+        //Set the sidebar close after clicking
+        setToggleState(false)
         navigate('tasks')
+       
       } 
 
       const toCompleteTasks = ()=>{
-        navigate('taskstrack')
+        setToggleState(false)
+        navigate('taskstrack/completedTasks')
+      }
+
+      const toUnCompleteTasks = ()=>{
+        setToggleState(false)
+        navigate('taskstrack/unCompletedTasks')
       }
 
 
@@ -40,25 +49,25 @@ const Navbar = () => {
                 Home
             </NavText>
         </NavItem>
-        <NavItem eventKey="charts">
+        <NavItem eventKey="history">
             <NavIcon>
                 <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
                 History
             </NavText>
-            <NavItem eventKey="charts/linechart">
+            <NavItem eventKey="history/tasks completed">
                 <NavText  onClick={toCompleteTasks}>
                     Tasks completed
                 </NavText>
             </NavItem>
-            <NavItem eventKey="charts/barchart">
-                <NavText>
+            <NavItem eventKey="history/tasks uncompleted">
+                <NavText onClick={toUnCompleteTasks}>
                     Tasks uncompleted
                 </NavText>
             </NavItem>
         </NavItem>
-        <NavItem eventKey="charts">
+        <NavItem eventKey="logout">
             <NavIcon>
                 <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
             </NavIcon>

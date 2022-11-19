@@ -1,25 +1,17 @@
-.mainSingleTask{
+.oneUnTask{
+    display: inline-block;
     margin: 0 auto;
-    text-align: center;
-    padding: 8px;
-    width: 70%;
-    height: fit-content;
-    font-size: 80%;
+    padding:1rem;
     border-radius: 8px;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    text-align: left;
-    transition: 0.4s;
+    border: none;
+    text-align: center;
+    margin: 0.6rem;
+    width: 30%;
+    height: fit-content;
+    box-shadow: 1px 1px 4px 4px rgba(57, 55, 55, 0.350);
 } 
 
-.mainSingleTask:hover{
-    transform: scale(1.1);
-}
-
-.mainSingleTask h3{
-    text-decoration: underline;
-}
-.editDots::after{
+.editDotsUn::after{
     cursor: pointer;
     float: right;
     z-index: 10;
@@ -31,12 +23,11 @@
     transition: 0.5s;     
 }
 
-.editDots:hover{
+.editDotsUn:hover{
     color: rgb(207, 202, 202);
-    
-}
+} 
 
-.editOrDeleteDiv{
+.restoreDiv{
     background-color: white;
     z-index: 10;
     position: relative;
@@ -48,14 +39,14 @@
     font-size: small;
     border-radius: 4px;
 }
-.editOrDeleteDiv div{
+.restoreDiv div{
     cursor: pointer;
     font-weight: bold;
     transition: 0.6s;
+    background-color: rgba(86, 134, 134, 0.746);
+
 } 
 
-
-
-.editOrDeleteDiv div:hover{
-background-color: rgba(86, 134, 134, 0.746);
+.restoreDiv div:hover{
+background-color: rgba(160, 187, 187, 0.609);
 }

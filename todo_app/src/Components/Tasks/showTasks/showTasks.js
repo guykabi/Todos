@@ -48,6 +48,7 @@ const ShowTasks = () => {
 
    
   return (
+    <>
     <div className='showTaskMainDiv'>
         <h2>{userData.data.Name}'s  tasks   {`(${countTasks})`}</h2>
         <div>
@@ -77,6 +78,7 @@ const ShowTasks = () => {
           })}
         </div>
     </div>
+    </>
   )
 }
 

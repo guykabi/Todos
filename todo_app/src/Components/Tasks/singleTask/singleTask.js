@@ -74,8 +74,8 @@ import moment from "moment"
   }
 
    return (
-     <div className='mainSingleTask'  style={{backgroundColor:`${props.Importance.toLowerCase()}`,cursor:'pointer'}}>
-      {isThreeDots&&<span className='editPencil' onClick={()=>{setTriggerDots(!triggerDots)}}></span>}
+     <div className='mainSingleTask'   style={{backgroundColor:`${props.Importance.toLowerCase()}`,cursor:'pointer'}}>
+      {isThreeDots&&<span className='editDots' onClick={()=>{setTriggerDots(!triggerDots)}}></span>}
       {triggerDots&&<div className='editOrDeleteDiv'>
         <div onClick={toEdit}>Edit</div>
         <div onClick={()=>setTriggerSureToDelete(true)}>Delete</div>

@@ -161,7 +161,7 @@ const timePassed = (start,end) =>{
    
    if(time < 1)
    {      
-      console.log(time)
+      
        let minuts = Math.floor(time*60)
       return `${minuts} minuts`
    }

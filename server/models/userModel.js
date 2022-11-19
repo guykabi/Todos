@@ -10,7 +10,7 @@ const taskSchema =  new Schema({
     Importance:String,
     Upto:String,
     Complete:Boolean,
-    OriginCreate:String
+    OriginCreate:Date
 },{timestamps:true})
 
 const userSchema = new Schema({
