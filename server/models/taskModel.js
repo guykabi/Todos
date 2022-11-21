@@ -2,16 +2,17 @@ const mongoose = require('mongoose')
 const {Schema} = mongoose 
 
 
-let taskSchema = new Schema({
+const taskSchema = new Schema({
     userId:String,
     Topic:String,
     Task:String,
     Importance:String,
     Upto:String,
-    Complete:Boolean
+    Complete:Boolean,
+    OriginCreate:Date,
+    SecondChance:Boolean 
 },
 {timestamps:true}
 ) 
-
-
-module.exports = mongoose.model('tasks',taskSchema)
+let taskModel =  mongoose.model('tasks',taskSchema)
+module.exports = {taskSchema,taskModel}

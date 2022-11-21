@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import './unCompletedTasks.css'
-import { getUserData } from '../../../utils/utils'
+import { getUserData } from '../../../utils/ApiUtils'
 import SingleUnCompletedTask from '../singleUnCompletedTask/singleUnCompletedTask'
 const UnCompletedTasks = () => {
 
@@ -37,9 +37,8 @@ const UnCompletedTasks = () => {
     <div className='unCompletedTasksMainDiv'>
       <h2>UnCompletedTasks</h2> <br />
       {userDetails&&userDetails.TasksUnCompleted.map((u,index)=>{
-           return <SingleUnCompletedTask key={index} taskData={u}/>
+           return <SingleUnCompletedTask key={index} position={index} taskData={u}/>
          })}
-
     </div>
 
     </>

@@ -1,17 +1,16 @@
-const taskModel = require('./models/taskModel')
+const {taskModel} = require('./models/taskModel')
 const userModel = require('./models/userModel')
 
 
 
 const handleCompleteness =async (task,fieldName) =>{
- //let newTask = {...task}
+ 
 
  //Adding origin create field to track later if the user will want to restore to task
  task.OriginCreate = task.createdAt 
  
- 
   try{
-       //Deletes the task first 
+
        await taskModel.findByIdAndDelete(task._id)
     
        //Than add the task to right field in the user document -r
@@ -27,4 +26,18 @@ const handleCompleteness =async (task,fieldName) =>{
   }
 } 
 
-module.exports = {handleCompleteness}
+const currentDayFormat = () =>{
+
+const today = new Date();
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+
+let formattedToday = yyyy + '-' + mm + '-' + dd;
+return formattedToday
+}
+
+module.exports = {handleCompleteness,currentDayFormat}

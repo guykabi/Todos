@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {getUserData} from '../../../utils/utils'
+import {getUserData} from '../../../utils/ApiUtils'
 import SingleCompleteTask from '../singleCompleteTask/singleCompleteTask'
 import Button from '../../../UI/Button/Button'
 

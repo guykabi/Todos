@@ -1,7 +1,7 @@
 .globalBtn{
-    margin-top: 1rem;
-    width: 90px;
-    height: 30px;
+    margin: 0.5rem;
+    width: fit-content;
+    height: fit-content;
     padding: 4px;
     color: black;
     border: 2px solid rgb(29, 128, 164) ;

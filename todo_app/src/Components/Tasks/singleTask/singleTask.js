@@ -1,9 +1,9 @@
 import './singleTask.css'
  import React, { useState,useContext,useEffect } from 'react'
- import { taskToDeletete } from '../../../utils/utils'
+ import {timeRemainTask } from '../../../utils/utils'
+ import {taskToDelete} from '../../../utils/ApiUtils'
  import { todoContext } from '../../../Context/TodoContext'
  import Modal from '../../../UI/Modal/Modal'
-import moment from "moment"
  
  
  const SingleTask = (props) => {
@@ -12,7 +12,9 @@ import moment from "moment"
   const [isThreeDots,setIsThreeDots]=useState(true)
   const [isError,setIsError]=useState(true)
   const ctx = useContext(todoContext)
-  const timeLeft =moment(props.Upto, "YYYYMMDD").fromNow(); //Calculate the remain time for the task
+  //Giving the exact time remain to the task
+  let timeRemain = timeRemainTask(props.Upto)
+
   
 
   useEffect(()=>{
@@ -44,7 +46,7 @@ import moment from "moment"
 
   const deleteTask = async()=>{
     try{
-       let resp = await taskToDeletete(props._id)
+       let resp = await taskToDelete(props._id)
        if(resp === 'Delete')
        {
         ctx.dispatch({type:'TASKTODELETE',payload:props._id})
@@ -84,7 +86,7 @@ import moment from "moment"
         <div>
             <div>{props.Task}</div> 
             Importance: <span>{props.Importance}</span> <br />
-            {!props.Complete&&<span>To complete {timeLeft}</span>} <br /> 
+            {!props.Complete&&<span>To complete {timeRemain}</span>} <br /> 
             <span>Complete: {props.Complete.toString()}</span>
         </div> 
            {triggerSureToDelete&&<Modal onClose={switchOff}>

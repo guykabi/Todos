@@ -1,22 +1,14 @@
-const taskModel = require('../models/taskModel')
+const {taskModel} = require('../models/taskModel')
 const userModel = require('../models/userModel')
 const {handleCompleteness} = require('../utils')
 const express = require('express')
 const router = express.Router()  
 const jwt = require('jsonwebtoken')
+const {currentDayFormat} = require('../utils')
 require('dotenv').config()  
 
-//Creates the current day foramt to compare which task is still valid
-const today = new Date();
-const yyyy = today.getFullYear();
-let mm = today.getMonth() + 1; // Months start at 0!
-let dd = today.getDate();
-
-if (dd < 10) dd = '0' + dd;
-if (mm < 10) mm = '0' + mm;
-
-const formattedToday = yyyy + '-' + mm + '-' + dd;
- 
+//Get the current date of the day with format of yyyy-mm-dd
+const today = currentDayFormat()
 
 
 router.get('/:id',async(req,resp,next)=>{
@@ -39,11 +31,11 @@ router.get('/:id',async(req,resp,next)=>{
                 const tasks = await taskModel.find({userId:req.params.id}).sort({Upto:1})
                 
                 //All tasks that are still valid
-                let validTasks = tasks.filter(t=> t.Upto >= formattedToday)
+                let validTasks = tasks.filter(t=> t.Upto >= today )
 
                 //All tasks that are not valid and yet to be complete
-                let invalidTasks = tasks.filter(t=> t.Upto < formattedToday)
-
+                let invalidTasks = tasks.filter(t=> t.Upto < today)
+                console.log(today)
                 if(invalidTasks.length > 0)//If there are any invalid tasks
                 {          
                     
@@ -81,7 +73,37 @@ router.post('/',async(req,resp,next)=>{ //Adding a new user
     {
        next(err)
     }
-})  
+})   
+
+
+
+router.post('/restoretask',async(req,resp,next)=>{ //Adding a new user
+   const {body} = req
+   if(body.OriginCreate)//Extra measure of checking if this indeed restored task
+   {
+
+      try{ 
+            let deleteUnCompletedTask = await userModel.updateOne(
+               {_id:body.userId},
+               {$pull : {TasksUnCompleted : {_id:body._id}}},{new:true}
+            ) 
+            if(!deleteUnCompletedTask) return next(new Error('Unable to delete'))
+            
+            const task = new taskModel(req.body)
+            try{
+               const data = await task.save()
+               return resp.status(200).json({message:'Added Successfully',restoreTask:data,dataOfUser:deleteUnCompletedTask})
+            }catch(err)
+            {
+               next(err)
+            }
+     }catch(err)
+     {
+      next(err)
+     }
+   }
+})   
+
 
 
 router.patch('/:id',async(req,resp,next)=>{//Updates task

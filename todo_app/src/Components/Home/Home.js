@@ -3,7 +3,7 @@ import Navbar from '../../UI/Navbar/Navbar'
 import { Outlet,useNavigate } from 'react-router'
 import React,{ useEffect,useContext,useState } from 'react'
 import {todoContext} from '../../Context/TodoContext'
-import { getAllUserTasks } from '../../utils/utils'
+import { getAllUserTasks } from '../../utils/ApiUtils'
 
 
 const Home = () => {
@@ -15,22 +15,23 @@ const Home = () => {
    useEffect(()=>{  
 
     const getUserTasks = async ()=>{
-      if(userData)//Check if there is token passed through the localStorgae
-      {
+      //Check if there is token passed through the localStorgae
+      if(!userData) return
+
         try{ 
              let res = await getAllUserTasks(userData.data._id,userData.accessToken)
-             if(res)
-               {  
+             if(!res) return
+
                   localStorage.setItem('userTasks',JSON.stringify(res))//Sets the user's tasks to the local stroage
                   dispatch({type:'GETDATA',payload:res})//Set the user tasks to the todo context
                   navigate('tasks')
-               }
+                  
          }catch(err)
            {   
              setIsTokenValid(true)//Trigger the error that the token is'nt valid
            }
        }
-    } 
+    
     getUserTasks()
    },[])
 

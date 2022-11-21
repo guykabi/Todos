@@ -1,9 +1,9 @@
 import './createTask.css'
 import moment from "moment";
 import Modal from '../../../UI/Modal/Modal';
-import React,{ useContext,useState,useEffect } from 'react';
+import React,{ useContext,useState} from 'react';
 import { todoContext } from '../../../Context/TodoContext';
-import { addTask } from '../../../utils/utils';
+import { addTask } from '../../../utils/ApiUtils';
 import UpdateTask from '../updateTask/updateTask';
 
 
@@ -15,17 +15,8 @@ const CreateTask = () => {
  const [isNewTask,setIsNewTask]=useState(false)//State that controls over the newTask form
  const [isError,setIsError]=useState(false)//State of the error message if form was unabled to submit
  const [showFinal,setShowFinal]=useState(false)//State that manage the popup-sum message
- const [isToEdit,setIsToEdit]=useState(false)//State that manage the appearance of the task to edit
  const today = moment().format('YYYY-MM-DD'); //Date of today for the date input
-
-
- /*useEffect(()=>{
-  if(ctx.taskToEdit != null)//Load the requested task to edit
-  {
-    setIsToEdit(true)
-  }
- },[ctx.taskToEdit])*/
-
+ 
  
 const handleTask = (e)=> //Sets the task fields
 {
@@ -89,7 +80,6 @@ const confirmNewTask =async()=>{//Sets the new task to the user tasks on the DB
 
 const setNewTask = ()=>{
   ctx.dispatch({type:'TASKTOEDIT',payload:null})
-  setIsToEdit(false)
 }
 
  if(ctx.taskToEdit)
@@ -146,8 +136,9 @@ const setNewTask = ()=>{
               </span>
               <input onChange={handleTask} type='radio' value="Red"  name="Importance"/> <br /> <br />
               <label className='dateLable' htmlFor="date">Choose date to complete:</label> 
-              <input type="date" onChange={handleTask} name="Upto"  id='date'  required/> <br /> <br />
+              <input type="date" onChange={handleTask} name="Upto"  id='date' min={today}  required/> <br /> <br />
               <button onClick={()=>{setIsNewTask(false)}}>Return</button>&nbsp;<button type='submit'>Send</button>
+              
           </form>
         </div>} 
         {showFinal&&

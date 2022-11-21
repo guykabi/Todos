@@ -1,17 +1,10 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose 
-const {hash} = require('bcryptjs')
 const bcrypt = require('bcryptjs/dist/bcrypt')
+const {taskSchema} = require('./taskModel')
 
-const taskSchema =  new Schema({
-    userId:String,
-    Topic:String,
-    Task:String,
-    Importance:String,
-    Upto:String,
-    Complete:Boolean,
-    OriginCreate:Date
-},{timestamps:true})
+//Unique schema for completed and uncompleted tasks only
+
 
 const userSchema = new Schema({
     Name:String,

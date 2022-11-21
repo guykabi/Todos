@@ -1,5 +1,4 @@
 import Login from "./Components/Login/Login";
-import { AuthContextProvider } from "./Context/AuthContext";
 import { TodoContextProvider } from "./Context/TodoContext";
 import CompletedTasks from "./Components/TasksTracking/completedTasks/completedTasks";
 import UnCompletedTasks from "./Components/TasksTracking/unCompletedTasks/unCompletedTasks";
@@ -15,7 +14,6 @@ const TasksTracking = lazy(()=> import ("./Components/TasksTracking/tasksTrackin
 function App() {
   return (
     <div className="App">
-      <AuthContextProvider>
        <TodoContextProvider>
         <Suspense fallback={<h1>Loading</h1>}>
          <Routes>
@@ -30,7 +28,6 @@ function App() {
         </Routes>
         </Suspense>
        </TodoContextProvider>
-      </AuthContextProvider>
     </div>
   );
 }

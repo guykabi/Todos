@@ -1,7 +1,8 @@
 import React,{useState,useContext,useEffect} from 'react'
 import './updateTask.css'
+import moment from "moment";
 import { todoContext } from '../../../Context/TodoContext';
-import {updateTask } from '../../../utils/utils';
+import {updateTask} from '../../../utils/ApiUtils';
 
 
 const UpdateTask = (props) => {
@@ -12,6 +13,8 @@ const [currentDetails,setCurrentDetails]=useState(null)//State that save the det
 const [updateDetails,setUpdateDetails]=useState(null)//The updated fiedls to update - only it!
 const [enableBtn,setEnableBtn]=useState(false)//Control the submit button activeness
 const [whenCompleteMark,setWhenCompleteMark]=useState(false)
+const today = moment().format('YYYY-MM-DD'); //Date of today for the date input
+
 
 useEffect(()=>{
     if(ctx.taskToEdit != null)//Load the requested task to edit
@@ -41,7 +44,7 @@ const isTheSame = (e)=>{
             delete newUpdateDetails[name] //Deleting the field that return the same value as already exists
             setUpdateDetails(newUpdateDetails)
 
-            //When there is nothing chnged again - the state of update is ampty
+            //When there is nothing changed again - the state of update is empty
         if(Object.keys(updateDetails).length == 1)
           { 
             setEnableBtn(false)//Unable the submit button
@@ -76,6 +79,7 @@ const isTheSame = (e)=>{
  } 
  
  const sendUpdate = async(e)=>{
+  
    e.preventDefault() 
    try{
           let resp = await updateTask(ctx.taskToEdit._id,updateDetails)
@@ -156,7 +160,7 @@ const selectField = options.map((o,index)=>{//Rendering options tags to the sele
               <input onChange={isTheSame} type='radio' disabled={whenCompleteMark} value="Red" checked={currentDetails.Importance === 'Red'}  name="Importance" /> <br /> <br />
 
         <label htmlFor="Upto">Up to: </label>
-        <input type="date" required id='Upto' disabled={whenCompleteMark} name='Upto' value={currentDetails.Upto} onChange={isTheSame}   /><br /> <br />
+        <input type="date" required id='Upto' disabled={whenCompleteMark} min={today} name='Upto' value={currentDetails.Upto} onChange={isTheSame}   /><br /> <br />
 
         <label>Complete: </label>
         <span>No</span>&nbsp;

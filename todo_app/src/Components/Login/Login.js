@@ -23,10 +23,15 @@ const Login = () => {
     setCredentials({...credentials,[name]:value})
   }
 
-   const checkUser =async (e)=>{
+   const handleLoginSubmit =async (e)=>{
    e.preventDefault() 
-   await login(credentials) //Checks if the user exists 
-   if(localStorage.getItem('userData'))//Sign for success of the authentication
+
+   //Use the login hook for checking user validity
+   await login(credentials) 
+
+   //If localStorage was set on that filed name - 
+   //means success in login proccess and moving to the home page
+   if(localStorage.getItem('userData'))
    {
     navigate('/Home')//Moves to the main page
    }
@@ -36,18 +41,18 @@ const Login = () => {
     <div className='mainLoginDiv'>
      <div className="formDiv">
      <h2>Login</h2>
-        <form onSubmit={checkUser}>
+        <form onSubmit={handleLoginSubmit}>
          <input type="email"
             name='Email'
             placeholder='Email'
             required
-            onChange={handleUserDetails} />
+            onChange={(e)=>setCredentials({...credentials,[e.target.name]:e.target.value})} />
             <br /> <br />
          <input type="password"
             name='Password'
             placeholder='Password'
             required
-            onChange={handleUserDetails} /> 
+            onChange={(e)=>setCredentials({...credentials,[e.target.name]:e.target.value})} /> 
             <br /> <br />  
               {isLoading&&<ClipLoader
                color={'gray'}

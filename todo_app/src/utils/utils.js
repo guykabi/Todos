@@ -1,65 +1,7 @@
-import axios from "axios"
+import moment from "moment"
 
-const getAllUserTasks =async (id,token)=>{
-    try{
-        const {data:res} = await axios.get('/tasks/'+id,{
-         headers: {
-           'x-access-token': token
-           }
-        }) 
-        if(res)
-        {
-          return res
-        }
-     }catch(err)
-     {   
-        return err.message
-   }
-}    
 
-const getUserData = async (id) =>{
-   try{
-        const {data:res} = await axios.get('/users/'+id) 
-        if(res.message === 'User data')
-        {
-         return res.Data
-        }
-   }catch(err)
-   {
-        return err.message
-   }
-}
-
-const addTask =async (body)=>{
-   try{
-      const {data:res} = await axios.post('/tasks',body)
-      if(res.message === 'Added Successfully') 
-      {
-        return res.Data
-      } 
-   }catch(err)
-   {
-      return err.message
-   }
-}
-
-const updateTask = async (id,body)=>{
-    try{
-       const {data:res} = await axios.patch('/tasks/'+id,body)
-       if(res.message === 'Updated') 
-       {
-         return res.Data
-       } 
-       if(res === 'Completed task added and deleted')
-       {
-         return res 
-       }
-    }catch(err)
-    {
-       return err.message
-    }
-}
-
+//Search for any substring or text in all of the tasks fields
 function customFilter(objList, text){
    if(undefined === text || text === '' ) return objList;
    return objList.filter(product => {
@@ -75,49 +17,39 @@ function customFilter(objList, text){
 }; 
 
 
-const taskToDeletete = async (id)=> {
-     try{
-         const {data:res} =await axios.delete('/tasks/'+id)
-         if(res === 'Delete')
-         {
-            return res
-         }
-     }catch(err)
-     {
-         return err.message
-     }
-} 
 
 
-
-
-const checkPosition = (arr,task) =>{
+const insertNewTaskToPosition = (arr,task) =>{
    
-   for(let i=0; i<arr.length;i++)//Check the for the right position to insert the new task
-   { 
+   for(let i=0; i<arr.length;i++){
+
+      //If its not the last element
       if(i !== (arr.length-1))
        {       
-        
-         if(i === 0 && arr[i].Upto > task.Upto )//If its the first element
+
+         //If its the first element
+         if(i === 0 && arr[i].Upto > task.Upto )
          { 
             //Push to the beginning
             arr.unshift(task)
             return arr
          } 
-
+         
+         //If the new task complete date equal to the current task in the loop
+         //And less than the next one
          if(arr[i].Upto === task.Upto && task.Upto < arr[i+1].Upto)
          {
             arr.splice(i+1,0,task)
             return arr
          }
-
+        
+         //If the new task complete date is less than the current
+         // task and bigger than the next one
         if(arr[i].Upto < task.Upto && task.Upto < arr[i+1].Upto)
         { 
            
-         //Finds the after task index
-         let index = arr.indexOf(arr[i+1])
          //Insert the new task before the after task
-         arr.splice(index,0,task)
+         arr.splice(i+1,0,task)
          //Sets the context with new arrange array of tasks
          return arr
        }  
@@ -166,10 +98,14 @@ const timePassed = (start,end) =>{
       return `${minuts} minuts`
    }
    
+} 
+
+const timeRemainTask = (date) =>{
+  let today = new Date();
+  let tomorrow = new Date();
+  tomorrow.setDate(today.getDate()-1);
+  return  moment(date, "YYYYMMDD").from(tomorrow);
 }
 
 
-
-export {getAllUserTasks,getUserData,addTask,
-        updateTask, customFilter,
-        taskToDeletete,checkPosition,timePassed}
+export {customFilter,insertNewTaskToPosition,timePassed,timeRemainTask}

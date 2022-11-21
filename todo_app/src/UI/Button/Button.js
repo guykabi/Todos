@@ -7,7 +7,7 @@ const Button = (props) => {
     //Trigger only if there is onClick event passed in props
      if(props.click)
      {
-      props.click()
+       props.click()
      }
   } 
 

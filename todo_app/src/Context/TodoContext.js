@@ -1,5 +1,5 @@
 import React,{ createContext,useReducer } from "react"; 
-import {checkPosition} from '../utils/utils'
+import {insertNewTaskToPosition} from '../utils/utils'
 
 export const todoContext = createContext() 
 
@@ -12,7 +12,7 @@ export const todoReducer = (state,action)=>{
 
             let newArr = [...state.userTasks]
             //Function to set the task on the right index base on the final date
-            let final = checkPosition(newArr,action.payload)
+            let final = insertNewTaskToPosition(newArr,action.payload)
             return {userTasks:final}
             
         
@@ -26,7 +26,7 @@ export const todoReducer = (state,action)=>{
             //Remove the unupated task/previous one
             Arr.splice(taskIndex,1)
             //Function to set the task on the right index base on the final date
-            let final2 = checkPosition(Arr,action.payload)
+            let final2 = insertNewTaskToPosition(Arr,action.payload)
             //Sets the context with new arrange array of tasks
             return {userTasks:final2}
 
