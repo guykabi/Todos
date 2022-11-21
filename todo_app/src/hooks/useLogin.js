@@ -1,11 +1,13 @@
 import {useState} from "react";
 import axios from 'axios'
+import {setItemToLocal} from '../utils/storageUtils'
 
 const useLogin = ()=>{
     const [error,setError]=useState(null)
     const [isLoading,setIsLoading]=useState(false)
    
     const login = async (credentials)=>{
+
          setIsLoading(true)
          setError(null)//Zero the error state if there was any before
          try{
@@ -25,13 +27,17 @@ const useLogin = ()=>{
 
             }
             if(res.data.Name){
-              //Load to local storage 
-              localStorage.setItem('userData',JSON.stringify(res))
+              
+              //Load user details + token to local storage 
+              setItemToLocal('userData',res)
+
+              //Turn off the loading wheel
               setIsLoading(false)
             }
 
         }catch(err)
         {
+          //Turn on the error message
           setIsLoading(false)
           setError('Network error')
            let timer = setTimeout(()=>{

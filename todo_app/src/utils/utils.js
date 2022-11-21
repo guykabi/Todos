@@ -102,7 +102,10 @@ const timePassed = (start,end) =>{
 
 const timeRemainTask = (date) =>{
   let today = new Date();
-  let tomorrow = new Date();
+  let tomorrow = new Date(); 
+
+  //Sets the time from tomorrow becuase to the user
+  //has the whole day, until midnight to complete the task
   tomorrow.setDate(today.getDate()-1);
   return  moment(date, "YYYYMMDD").from(tomorrow);
 }
