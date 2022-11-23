@@ -29,9 +29,10 @@ const Login = () => {
 
       //If localStorage was set on that field name -
       //means success in login proccess and moving to the home page
-         if (localStorage.getItem("userData")) {
+         if (!getItemFromLocal("userData")) return
+
               navigate("/Home"); //Moves to the main page
-            }
+            
      }catch(err)
        {     
              //Error taking care in the login hook

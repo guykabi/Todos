@@ -3,6 +3,7 @@ import "./updateTask.css";
 import moment from "moment";
 import { todoContext } from "../../../Context/TodoContext";
 import { updateTask } from "../../../utils/ApiUtils";
+import { handleTimeLimit } from "../../../utils/utils";
 
 const UpdateTask = (props) => {
   const ctx = useContext(todoContext); //TodoContext
@@ -11,52 +12,93 @@ const UpdateTask = (props) => {
   const [updateDetails, setUpdateDetails] = useState(null); //The updated fiedls to update - only it!
   const [enableBtn, setEnableBtn] = useState(false); //Control the submit button activeness
   const [whenCompleteMark, setWhenCompleteMark] = useState(false);
+  const [maxDaysLimit,setMaxDaysLimit]=useState(null)
   const today = moment().format("YYYY-MM-DD"); //Date of today for the date input
+
 
   useEffect(() => {
     if (ctx.taskToEdit != null) {
+
       //Load the requested task to edit
       setCurrentDetails(ctx.taskToEdit);
       setEnableBtn(false);
       setUpdateDetails(null);
     }
-  }, [ctx.taskToEdit]);
+  }, [ctx.taskToEdit]); 
+
+
+  useEffect(()=>{
+    if(!currentDetails) return
+      
+      //Function that return the max date which the calendar
+      // will enable choosing dates - based on task's importance level
+      let dateLimit =  handleTimeLimit(currentDetails.Importance,today)
+
+      //Sets the max date to enable on the date input
+      setMaxDaysLimit(dateLimit)
+
+      //Sets back the original date of the task
+      setCurrentDetails({ ...currentDetails,Upto:ctx.taskToEdit.Upto});
+      
+      if(!updateDetails) return
+      //Checks if there was any chnage made in the task edit form
+      //if not, unable the submit button
+      if(Object.keys(updateDetails).length === 1 && !Object.keys(updateDetails).includes('Importance') ) 
+      {
+        setEnableBtn(false)
+      }
+
+  },[currentDetails&&currentDetails.Importance])
+
 
   //Checking if any detail changed - if indeed changed
-  //update the new updateDetails state which sends only the fields that has changed to the server
-  const isTheSame = (e) => {
+  //updates the new updateDetails state which sends only
+  //the fields that has changed to the server
+  const handleTaskChange = (e) => {
+    
     const { name, value } = e.target;
 
     //Update only the current data that present to the user within the fields
     setCurrentDetails({ ...currentDetails, [name]: value });
 
     if (ctx.taskToEdit[name].toString() === value || !updateDetails) {
+
       if (updateDetails) {
-        const newUpdateDetails = { ...updateDetails };
-        delete newUpdateDetails[name]; //Deleting the field that return the same value as already exists
+
+        const newUpdateDetails = { ...updateDetails }
+
+        //Deleting the field that return the same value as already exists
+        delete newUpdateDetails[name]
         setUpdateDetails(newUpdateDetails);
 
-        //When there is nothing changed again - the state of update is empty
+        //When there is nothing changed again -
+        //the state of updateDetails returned to be empty again
         if (Object.keys(updateDetails).length === 1) {
-          setEnableBtn(false); //Unable the submit button
+          setEnableBtn(false) //Unable the submit button
         }
+
         if (value === "false") {
           setUpdateDetails(null); //Clear the state when switch back to false
-          setWhenCompleteMark(false); //Switch off the diabled on each field
+          setWhenCompleteMark(false); //Switch off the disabled on each field
           return setEnableBtn(false);
         }
       }
     }
+    //If the user choose/change a value that isn't exsits yet
     if (ctx.taskToEdit[name] !== value) {
       if (value === "true") {
+
         //Prepare the new object to send to the server
         let obj = { ...currentDetails };
         obj.Complete = true;
-        obj.OriginCreate = currentDetails.createdAt; //Task date of creation field
+
+         //Task date of creation field
+        obj.OriginCreate = currentDetails.createdAt;
 
         setUpdateDetails(obj);
         setWhenCompleteMark(true); //Unable all the form fields
         setEnableBtn(true); //enable the submit button
+
       } else {
         setUpdateDetails({ ...updateDetails, [name]: value });
         setEnableBtn(true);
@@ -66,6 +108,7 @@ const UpdateTask = (props) => {
 
   const sendUpdate = async (e) => {
     e.preventDefault();
+
     try {
       let resp = await updateTask(ctx.taskToEdit._id, updateDetails);
 
@@ -75,11 +118,13 @@ const UpdateTask = (props) => {
         props.onClose(); //Switch to the start window
       }
 
-      if (resp === "Completed task added and deleted") {
+      if (resp === "Completed task added and deleted")
+       {
         //When task completed, deleting the task that completed
         ctx.dispatch({ type: "TASKTODELETE", payload: updateDetails._id }); 
         props.onClose(); //Switch to the start window
-      } else {
+      } 
+      else {
         setIsErrorUpdate(true); //Error message
 
         let timer = setTimeout(() => {
@@ -103,7 +148,10 @@ const UpdateTask = (props) => {
         clearTimeout(timer);
       };
     }
-  };
+  }; 
+
+
+  
 
   const options = ["Education", "Free time", "Work", "Household management"];
   const selectField = options.map((o, index) => {
@@ -125,7 +173,7 @@ const UpdateTask = (props) => {
             required
             value={currentDetails.Topic}
             disabled={whenCompleteMark}
-            onChange={isTheSame}
+            onChange={handleTaskChange}
             id="Topic"
             name="Topic"
           >
@@ -139,7 +187,7 @@ const UpdateTask = (props) => {
             required
             id="Task"
             disabled={whenCompleteMark}
-            onChange={isTheSame}
+            onChange={handleTaskChange}
             name="Task"
             value={currentDetails.Task}
             checked={true}
@@ -153,7 +201,7 @@ const UpdateTask = (props) => {
             and there is no pressure to finish!
           </span>
           <input
-            onChange={isTheSame}
+            onChange={handleTaskChange}
             type="radio"
             disabled={whenCompleteMark}
             value="Green"
@@ -169,7 +217,7 @@ const UpdateTask = (props) => {
             in the near future!
           </span>
           <input
-            onChange={isTheSame}
+            onChange={handleTaskChange}
             type="radio"
             disabled={whenCompleteMark}
             value="Yellow"
@@ -183,7 +231,7 @@ const UpdateTask = (props) => {
             as soon as possible!
           </span>
           <input
-            onChange={isTheSame}
+            onChange={handleTaskChange}
             type="radio"
             disabled={whenCompleteMark}
             value="Red"
@@ -198,9 +246,10 @@ const UpdateTask = (props) => {
             id="Upto"
             disabled={whenCompleteMark}
             min={today}
+            max={maxDaysLimit}
             name="Upto"
             value={currentDetails.Upto}
-            onChange={isTheSame}
+            onChange={handleTaskChange}
           />
           <br /> <br />
           <label>Complete: </label>
@@ -210,7 +259,7 @@ const UpdateTask = (props) => {
             required
             name="Complete"
             value="false"
-            onChange={isTheSame}
+            onChange={handleTaskChange}
             checked={!JSON.parse(currentDetails.Complete)}
           />
           <span>Yes</span>&nbsp;
@@ -218,7 +267,7 @@ const UpdateTask = (props) => {
             type="radio"
             name="Complete"
             value="true"
-            onChange={isTheSame}
+            onChange={handleTaskChange}
             checked={JSON.parse(currentDetails.Complete)}
           />
           <br /> <br />

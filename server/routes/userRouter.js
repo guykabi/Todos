@@ -1,9 +1,9 @@
+//require('dotenv').config()
 const userModel = require('../models/userModel')
 const express = require('express')
 const router = express.Router() 
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
 
 router.get('/:id',async(req,resp,next)=>{
     try{
@@ -16,10 +16,11 @@ router.get('/:id',async(req,resp,next)=>{
 }) 
 
 
+
 router.post('/auth',async(req,resp,next)=>{ //Check is user exists - if does return the user data and token
     const {Email,Password} = req.body
       try{
-           let data = await userModel.findOne({Email}) 
+           let data = await userModel.findOne({Email})
            if(!data) 
              {
               return resp.status(200).json('User does not exist') 

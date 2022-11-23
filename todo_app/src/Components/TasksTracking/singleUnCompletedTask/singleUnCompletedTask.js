@@ -5,6 +5,7 @@ import Button from '../../../UI/Button/Button'
 import { useContext } from 'react'
 import {useNavigate} from 'react-router-dom'
 import { todoContext } from '../../../Context/TodoContext'
+import {setItemToLocal, getItemFromLocal} from '../../../utils/storageUtils'
 import axios from 'axios'
 
 const SingleUnCompletedTask = (props) => {
@@ -52,10 +53,10 @@ const SingleUnCompletedTask = (props) => {
             { 
               //Adds the restored to the tasks context 
                ctx.dispatch({type:'ADDEDTASK',payload:res.restoreTask})
-               let fromLocal =  {...JSON.parse(localStorage.getItem('userData'))}
+               let fromLocal =  getItemFromLocal('userData') 
                //Updating the local storage by deleting the task by its index
                fromLocal.data.TasksUnCompleted.splice([props.position],1)
-               localStorage.setItem('userData',JSON.stringify(fromLocal))
+               setItemToLocal('userData',fromLocal)
                navigate('/Home/tasks')
             }
         }catch(err)

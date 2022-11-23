@@ -1,3 +1,4 @@
+//require('dotenv').config()  
 const {taskModel} = require('../models/taskModel')
 const userModel = require('../models/userModel')
 const {handleCompleteness} = require('../utils')
@@ -5,10 +6,10 @@ const express = require('express')
 const router = express.Router()  
 const jwt = require('jsonwebtoken')
 const {currentDayFormat} = require('../utils')
-require('dotenv').config()  
 
 //Get the current date of the day with format of yyyy-mm-dd
 const today = currentDayFormat()
+
 
 
 router.get('/:id',async(req,resp,next)=>{
@@ -35,7 +36,7 @@ router.get('/:id',async(req,resp,next)=>{
 
                 //All tasks that are not valid and yet to be complete
                 let invalidTasks = tasks.filter(t=> t.Upto < today)
-                console.log(today)
+                
                 if(invalidTasks.length > 0)//If there are any invalid tasks
                 {          
                     

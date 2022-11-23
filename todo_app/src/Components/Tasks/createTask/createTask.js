@@ -1,24 +1,47 @@
 import "./createTask.css";
 import moment from "moment";
 import Modal from "../../../UI/Modal/Modal";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useRef } from "react";
 import { todoContext } from "../../../Context/TodoContext";
 import { addTask } from "../../../utils/ApiUtils";
+import { getItemFromLocal } from "../../../utils/storageUtils";
+import {handleTimeLimit} from '../../../utils/utils'
 import UpdateTask from "../updateTask/updateTask";
 
 const CreateTask = () => {
   const [taskDetails, setTaskDetails] = useState({}); //State that set the new task details
   const ctx = useContext(todoContext); //TodoContext
-  const userData = JSON.parse(localStorage.getItem("userData")); //LocalStorage
+  const userData = getItemFromLocal("userData"); //LocalStorage
   const [isNewTask, setIsNewTask] = useState(false); //State that controls over the newTask form
   const [isError, setIsError] = useState(false); //State of the error message if form was unabled to submit
   const [showFinal, setShowFinal] = useState(false); //State that manage the popup-sum message
+  const [maxDaysLimit,setMaxDaysLimit]=useState(null)
   const today = moment().format("YYYY-MM-DD"); //Date of today for the date input
+  const dateInputRef = useRef()
+  
+  
 
   //Sets the task fields
   const handleTask = (e) => {
     const { name, value } = e.target;
-    setTaskDetails({ ...taskDetails, [name]: value });
+    if(name !== 'Importance')  setTaskDetails({ ...taskDetails, [name]: value });
+
+    
+    if(name === 'Importance')
+    {
+      //Returns the max value the calendar will enable 
+      //choosing dates - base on importance level
+      let dateLimit =  handleTimeLimit(value,today)
+
+      //Updates the max key on the date input
+      setMaxDaysLimit(dateLimit)
+    
+      //Changes the value of the date input to the current date
+      dateInputRef.current.value = today
+
+      setTaskDetails({ ...taskDetails, Upto: today , [name]:value });
+    }
+
   };
 
   const sendTask = (e) => {
@@ -47,7 +70,7 @@ const CreateTask = () => {
 
     try {
       const res = await addTask(obj); //Add the new task to the DB
-      if (!res._id) {
+      if (res._id) {
         //Update the new data to the context with the new task that just been added
         ctx.dispatch({ type: "ADDEDTASK", payload: res });
         setShowFinal(false); //Remove the popup message
@@ -143,9 +166,8 @@ const CreateTask = () => {
             <span className="importanceLevel">Choose importance level:</span>
             <span className="greenRadio">gg</span>
             <span className="greenColorData">
-              <strong>Green</strong> means - task that is great to complete{" "}
-              <br />
-              and there is no pressure to finish!
+              <strong>Green</strong> means - task with no time limit<br />
+              and great to have it
             </span>
             <input
               onChange={handleTask}
@@ -157,9 +179,8 @@ const CreateTask = () => {
             &nbsp;&nbsp;
             <span className="yellowRadio">gg</span>
             <span className="yellowColorData">
-              <strong>Yellow</strong> means - task that need to be completed{" "}
-              <br />
-              in the near future!
+              <strong>Yellow</strong> means - task that need to be completed<br />
+              up to 14 days
             </span>
             <input
               onChange={handleTask}
@@ -170,8 +191,8 @@ const CreateTask = () => {
             &nbsp;&nbsp;
             <span className="redRadio">gg</span>
             <span className="redColorData">
-              <strong>Red</strong> means - task that is must be completed <br />
-              as soon as possible!
+              <strong>Red</strong> means - task that need to be completed<br />
+              up to 7 days
             </span>
             <input
               onChange={handleTask}
@@ -188,7 +209,9 @@ const CreateTask = () => {
               onChange={handleTask}
               name="Upto"
               id="date"
+              ref={dateInputRef}
               min={today}
+              max={maxDaysLimit}
               required
             />{" "}
             <br /> <br />

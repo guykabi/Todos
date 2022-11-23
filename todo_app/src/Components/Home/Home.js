@@ -4,9 +4,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import React, { useEffect, useContext, useState } from "react";
 import { todoContext } from "../../Context/TodoContext";
 import { getAllUserTasks } from "../../utils/ApiUtils";
+import {setItemToLocal,getItemFromLocal} from '../../utils/storageUtils'
 
 const Home = () => {
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = getItemFromLocal("userData")
   const [isTokenValid, setIsTokenValid] = useState(false);
   const { dispatch } = useContext(todoContext);
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Home = () => {
         );
         if (!res) return;
 
-        localStorage.setItem("userTasks", JSON.stringify(res)); //Sets the user's tasks to the local stroage
+        setItemToLocal("userTasks",res)  //Sets the user's tasks to the local stroage
         dispatch({ type: "GETDATA", payload: res }); //Set the user tasks to the todo context
         navigate("tasks");
       } catch (err) {
@@ -47,7 +48,7 @@ const Home = () => {
   return (
     <div className="mainHomeDiv">
       <div className="topNav">
-        <h2>Hey {userData.data.Name}, start manage your tasks</h2>
+        <h2>Start manage your tasks</h2>
       </div>
       <Navbar />
       <Outlet />

@@ -3,18 +3,22 @@ import { todoContext } from "../../../Context/TodoContext";
 import SingleTask from "../singleTask/singleTask";
 import "./showTasks.css";
 import { customFilter } from "../../../utils/utils";
+import {setItemToLocal,getItemFromLocal} from '../../../utils/storageUtils'
+
 
 const ShowTasks = () => {
   const tasksCtx = useContext(todoContext); //User's tasks from the todo context
-  let tasks = JSON.parse(localStorage.getItem("userTasks"));
+  let tasks = getItemFromLocal("userTasks")
   const [allUserTasks, setAllUserTasks] = useState(null); //All the tasks of the user that render into singleTask components
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = getItemFromLocal("userData")
   const [countTasks, setCountTasks] = useState(0);
 
+
+  
   useEffect(() => {
     if (tasksCtx.userTasks === null) return
       //Updating the tasks on the localStorage with the new tasks
-      localStorage.setItem("userTasks", JSON.stringify(tasksCtx.userTasks));
+      setItemToLocal("userTasks",tasksCtx.userTasks)
       setAllUserTasks(tasksCtx.userTasks); //Sets the new tasks array
       setCountTasks(tasksCtx.userTasks.length); //Counts the number of tasks
     

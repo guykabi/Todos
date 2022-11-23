@@ -2,9 +2,10 @@ import React,{useEffect,useState} from 'react'
 import './unCompletedTasks.css'
 import { getUserData } from '../../../utils/ApiUtils'
 import SingleUnCompletedTask from '../singleUnCompletedTask/singleUnCompletedTask'
+import { getItemFromLocal } from '../../../utils/storageUtils'
 const UnCompletedTasks = () => {
 
-    const userData = JSON.parse(localStorage.getItem('userData'))
+    const userData = getItemFromLocal("userData")
     const [userDetails,setUserDetails]=useState(null)
     const [isError,setIsError]=useState(false) 
 

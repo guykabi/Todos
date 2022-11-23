@@ -17,8 +17,6 @@ function customFilter(objList, text){
 }; 
 
 
-
-
 const insertNewTaskToPosition = (arr,task) =>{
    
    for(let i=0; i<arr.length;i++){
@@ -108,7 +106,43 @@ const timeRemainTask = (date) =>{
   //has the whole day, until midnight to complete the task
   tomorrow.setDate(today.getDate()-1);
   return  moment(date, "YYYYMMDD").from(tomorrow);
+} 
+
+
+//Function to 
+const addDays = (today,days) =>{
+   let date = new Date(today);
+   date.setDate(date.getDate() + days);
+   return date
+} 
+
+const handleTimeLimit = (importance,today) =>{
+      
+   if(importance === 'Green') return null
+   
+   //When task is yellow - up to 14 days to complete it
+   if(importance === 'Yellow')
+   {
+     //Sends the current date and the value 14 -  to limit the calendar
+     let addingDays = addDays(today,14)
+     
+     //Limits the calendar max field to 14 days from now
+     return moment(addingDays).format("YYYY-MM-DD")
+   } 
+   
+   //When task is yellow - up to 14 days to complete it
+   if(importance === 'Red')
+   {
+     //Sends the current date and the value 7 -  to limit the calendar
+     let addingDays = addDays(today,7)
+
+     //Limits the calendar max field to 7 days from now
+     return moment(addingDays).format("YYYY-MM-DD")
+   } 
+
 }
 
 
-export {customFilter,insertNewTaskToPosition,timePassed,timeRemainTask}
+export {customFilter,insertNewTaskToPosition,
+        timePassed,timeRemainTask,
+        addDays,handleTimeLimit}

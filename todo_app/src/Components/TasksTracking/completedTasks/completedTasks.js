@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { getUserData } from "../../../utils/ApiUtils";
 import SingleCompleteTask from "../singleCompleteTask/singleCompleteTask";
 import Button from "../../../UI/Button/Button";
+import { getItemFromLocal } from "../../../utils/storageUtils";
 
 const CompletedTasks = () => {
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = getItemFromLocal("userData")
   const [userDetails, setUserDetails] = useState(null);
   const [isError, setIsError] = useState(false);
   const [isAllOrGraph, setIsAllOrGraph] = useState(true);
