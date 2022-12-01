@@ -2,7 +2,7 @@ import React from 'react'
 import './Button.css'
 
 const Button = (props) => {
-
+  
   const clickEvent = ()=>{
     //Trigger only if there is onClick event passed in props
      if(props.click)
@@ -12,7 +12,7 @@ const Button = (props) => {
   } 
 
   return (
-    <button className='globalBtn' onClick={clickEvent}>
+    <button className='globalBtn' disabled={props.disable} onClick={clickEvent}>
         {props.title}
     </button>
   )

@@ -3,26 +3,24 @@ import { getUserData } from "../../../utils/ApiUtils";
 import SingleCompleteTask from "../singleCompleteTask/singleCompleteTask";
 import Button from "../../../UI/Button/Button";
 import { getItemFromLocal } from "../../../utils/storageUtils";
+import TasksGraph from "../tasksGraph/tasksGraph";
+import { useQuery } from "react-query";
+import ClipLoader from "react-spinners/ClipLoader";
+import { useNavigate } from "react-router-dom";
 
 const CompletedTasks = () => {
   const userData = getItemFromLocal("userData")
   const [userDetails, setUserDetails] = useState(null);
-  const [isError, setIsError] = useState(false);
   const [isAllOrGraph, setIsAllOrGraph] = useState(true);
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    const dataOfUser = async () => {
-      try {
-        let resp = await getUserData(userData.data._id);
-        if (resp._id) {
-          setUserDetails(resp);
-        }
-      } catch (err) {
-        setIsError(true);
-      }
-    };
-    dataOfUser();
-  }, []);
+  
+
+  const {isError,isLoading} =useQuery('userCompleted',()=>getUserData(userData.data._id),{
+    onSuccess:(data)=>{
+      setUserDetails(data)
+    }
+   })
 
   const toAllCompletedTasks = () => {
     setIsAllOrGraph(true);
@@ -32,10 +30,27 @@ const CompletedTasks = () => {
     setIsAllOrGraph(false);
   };
 
-  if (isError) {
-    //If cant fetch data from the server from any reason
-    return <h2>Error loading data</h2>;
-  }
+  if(isLoading)
+   {
+    return(
+      <div className="loadingMessageCompleted">
+        <br/><br/>
+        <h2>Looking for your completed tasks...</h2> <br/>
+        <ClipLoader color={"gray"} speedMultiplier="1" size={30} />
+      </div>
+    )
+   }
+
+   if(isError)
+       {
+         return(
+              <div>
+               <h2>Error loading data</h2> <br/>
+               <Button title='return home' click={()=>navigate('/Home/tasks')}/>
+               <Button title='return to login' click={()=>navigate('/')}/>
+              </div>
+            )
+        }
 
   return (
     <>
@@ -57,7 +72,7 @@ const CompletedTasks = () => {
           </div>
         ) : (
           <div>
-            <h2>Graph</h2>
+            <TasksGraph taskData={userDetails.TasksCompleted}/>
           </div>
         )}
       </div>

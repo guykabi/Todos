@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import ClipLoader from "react-spinners/ClipLoader";
+import Button from "../../UI/Button/Button";
 import {getItemFromLocal,clearLocal} from '../../utils/storageUtils'
 
 const Login = () => {
@@ -11,8 +12,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    //Checks if there is any user data on the localStorage
     if (!getItemFromLocal("userData")) return
-      //Checks if there is any user data on the localStorage
+      
       //Clear the user data when user coming back to the login page - backup to the logout from Home page
       clearLocal()
     
@@ -31,7 +34,7 @@ const Login = () => {
       //means success in login proccess and moving to the home page
          if (!getItemFromLocal("userData")) return
 
-              navigate("/Home"); //Moves to the main page
+              navigate("/Home")
             
      }catch(err)
        {     
@@ -76,9 +79,7 @@ const Login = () => {
           )}
           {error && <div>{error}</div>}
           <br />
-          <button disabled={isLoading} type="submit">
-            Login
-          </button>{" "}
+          <Button disable={isLoading} title='Login' type="submit"/>
           <br />
         </form>
       </div>

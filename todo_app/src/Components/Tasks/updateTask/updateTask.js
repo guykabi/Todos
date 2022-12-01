@@ -4,6 +4,7 @@ import moment from "moment";
 import { todoContext } from "../../../Context/TodoContext";
 import { updateTask } from "../../../utils/ApiUtils";
 import { handleTimeLimit } from "../../../utils/utils";
+import { useMutation } from "react-query";
 
 const UpdateTask = (props) => {
   const ctx = useContext(todoContext); //TodoContext
@@ -41,7 +42,7 @@ const UpdateTask = (props) => {
       setCurrentDetails({ ...currentDetails,Upto:ctx.taskToEdit.Upto});
       
       if(!updateDetails) return
-      //Checks if there was any chnage made in the task edit form
+      //Checks if there was any chanage made in the task edit form
       //if not, unable the submit button
       if(Object.keys(updateDetails).length === 1 && !Object.keys(updateDetails).includes('Importance') ) 
       {
@@ -104,41 +105,26 @@ const UpdateTask = (props) => {
         setEnableBtn(true);
       }
     }
-  };
+  }; 
 
-  const sendUpdate = async (e) => {
-    e.preventDefault();
-
-    try {
-      let resp = await updateTask(ctx.taskToEdit._id, updateDetails);
-
-      if (resp._id) {
-        //If task was updated but not completed
-        ctx.dispatch({ type: "UPDATETASK", payload: resp }); //Update the new data to the context with the new task that just been added
-        props.onClose(); //Switch to the start window
-      }
-
-      if (resp === "Completed task added and deleted")
-       {
-        //When task completed, deleting the task that completed
-        ctx.dispatch({ type: "TASKTODELETE", payload: updateDetails._id }); 
-        props.onClose(); //Switch to the start window
+  const {mutate:update} = useMutation(updateTask,{
+    onSuccess: (data)=>{
+      if (data._id)
+      {
+          //If task was updated but not completed
+          ctx.dispatch({ type: "UPDATETASK", payload: data }); //Update the new data to the context with the new task that just been added
+          props.onClose(); //Switch to the start window
       } 
-      else {
-        setIsErrorUpdate(true); //Error message
-
-        let timer = setTimeout(() => {
-          setIsErrorUpdate(false);
-        }, 3000);
-
-        return () => {
-          //Clears the setTimeout
-          clearTimeout(timer);
-        };
+      if(data === "Completed task added and deleted")
+      {
+          //When task completed, deleting the task that completed
+          ctx.dispatch({ type: "TASKTODELETE", payload: updateDetails._id }); 
+          props.onClose(); //Switch to the start window
       }
-    } catch (err) {
-      setIsErrorUpdate(true);
+    }, 
+    onError: () =>{
 
+      setIsErrorUpdate(true)
       let timer = setTimeout(() => {
         setIsErrorUpdate(false);
       }, 3000);
@@ -148,6 +134,16 @@ const UpdateTask = (props) => {
         clearTimeout(timer);
       };
     }
+
+  })
+
+  const sendUpdate = async (e) => {
+    e.preventDefault(); 
+    let obj = {...updateDetails}
+    obj._id = ctx.taskToEdit._id
+
+    //Trigger the mutation
+    update(obj)
   }; 
 
 

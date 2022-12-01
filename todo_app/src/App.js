@@ -6,6 +6,7 @@ import {  Routes, Route } from 'react-router-dom';
 import React,{lazy,Suspense} from 'react'
 
 
+
 //For lazy load
 const Home = lazy(()=> import  ("./Components/Home/Home"))
 const Tasks = lazy(()=> import  ("./Components/Tasks/Tasks"))
@@ -15,7 +16,7 @@ function App() {
   return (
     <div className="App">
        <TodoContextProvider>
-        <Suspense fallback={<h1>Loading</h1>}>
+        <Suspense fallback={<h1 style={{textAlign:'center',marginTop:'8rem'}}>Loading...</h1>}>
          <Routes>
          <Route path="/" element={<Login/>}/>
          <Route path="/Home" element={<Home/>}>

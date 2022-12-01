@@ -1,49 +1,62 @@
 import "./Home.css";
 import Navbar from "../../UI/Navbar/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { todoContext } from "../../Context/TodoContext";
 import { getAllUserTasks } from "../../utils/ApiUtils";
 import {setItemToLocal,getItemFromLocal} from '../../utils/storageUtils'
+import Button from "../../UI/Button/Button";
+import {useQuery} from 'react-query'
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 const Home = () => {
   const userData = getItemFromLocal("userData")
   const [isTokenValid, setIsTokenValid] = useState(false);
   const { dispatch } = useContext(todoContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
-  useEffect(() => {
-    const getUserTasks = async () => {
-      //Check if there is token passed through the localStorgae
-      if (!userData) return;
 
-      try {
-        let res = await getAllUserTasks(
-          userData.data._id,
-          userData.accessToken
-        );
-        if (!res) return;
+  const onSuccess = (data) =>{
+    setItemToLocal("userTasks",data) 
 
-        setItemToLocal("userTasks",res)  //Sets the user's tasks to the local stroage
-        dispatch({ type: "GETDATA", payload: res }); //Set the user tasks to the todo context
-        navigate("tasks");
-      } catch (err) {
-        setIsTokenValid(true); //Trigger the error that the token is'nt valid
-      }
-    };
+    //Set the user tasks to the todo context
+    dispatch({ type: "GETDATA", payload: data}); 
+    
+    navigate("tasks");       
+  } 
 
-    getUserTasks();
-  }, []);
+  const onError = () =>{
+     setIsTokenValid(true)
+  }
+  
+  const {isLoading} = useQuery(
+      'tasksUser',()=>getAllUserTasks(userData.data._id,userData.accessToken),
+      {onSuccess,onError}) 
+
+  const backToLogin = () =>{
+        navigate('/')
+      } 
 
   if (isTokenValid || !userData) {
-    //When token was not provided of right
+    //When token was not provided
     return (
       <div className="tokenErrorMessage">
         <h2>Error - cannot load page</h2> <br /> <br />
-        <button onClick={() => navigate("/")}>Return</button>
+        <Button click={backToLogin} title='Return' />
       </div>
     );
-  }
+  } 
+
+  if(isLoading)
+  {
+    return (
+      <div className="tokenErrorMessage">
+        <h2>Loading Home page...</h2> <br/>
+        <ClipLoader color={"gray"} speedMultiplier="1" size={30} />
+      </div>
+    );
+  } 
 
   return (
     <div className="mainHomeDiv">

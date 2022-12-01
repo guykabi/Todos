@@ -5,6 +5,9 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+
+
+
 router.get('/:id',async(req,resp,next)=>{
     try{
        let data = await userModel.findOne({_id:req.params.id})

@@ -93,7 +93,7 @@ const timePassed = (start,end) =>{
    {      
       
        let minuts = Math.floor(time*60)
-      return `${minuts} minuts`
+      return `${minuts} minutes`
    }
    
 } 
@@ -118,7 +118,14 @@ const addDays = (today,days) =>{
 
 const handleTimeLimit = (importance,today) =>{
       
-   if(importance === 'Green') return null
+   if(importance === 'Green')
+   {
+       //Sends the current date and the value 30 -  to limit the calendar
+       let addingDays = addDays(today,30)
+     
+     //Limits the calendar max field to 30 days from now
+     return moment(addingDays).format("YYYY-MM-DD")
+   }
    
    //When task is yellow - up to 14 days to complete it
    if(importance === 'Yellow')
@@ -143,6 +150,76 @@ const handleTimeLimit = (importance,today) =>{
 }
 
 
+const taskCompletePrecent = (timeCompleted,importance) =>{
+   
+   switch(importance)
+   {
+      case 'Green':
+         let greenPrecentage = (100 * timeCompleted) / 30
+         return greenPrecentage
+
+      case 'Yellow':
+         let yellowPrecentage = (100 * timeCompleted) / 14
+         return yellowPrecentage 
+
+      case 'Red':
+         let redPrecentage = (100 * timeCompleted) / 7
+         return redPrecentage 
+
+         default : 
+         return null
+   }
+     
+} 
+
+const overAllAvgPrecentage = (tasks) =>{
+
+   let graphData = []
+   let greenAvg = [], yellowAvg = [], redAvg = [] 
+
+   if(!tasks) return []
+
+   tasks.forEach(task=>{
+     
+     //Calculates the time that the task was completed
+     let timeResult = timePassed(task.OriginCreate,task.createdAt)
+      
+     //Extracts only the digits from the timeResult
+     let numbersOfDays =  timeResult.replace(/[a-z]/g,'') 
+     
+     //Converting minutes and hours values to suitable ratio vs day (24 hours)
+     if(timeResult.includes('hours')) numbersOfDays = numbersOfDays / 24 
+     if(timeResult.includes('minutes')) numbersOfDays = numbersOfDays / (24*60)
+
+     //Calculates the precenatage of the completion time from the alocated time to the task
+     let precentageFromAlocate = taskCompletePrecent(numbersOfDays,task.Importance)
+      
+
+     if(task.Importance === 'Green') greenAvg.push(precentageFromAlocate)
+     if(task.Importance === 'Yellow') yellowAvg.push(precentageFromAlocate)
+     if(task.Importance === 'Red') redAvg.push(precentageFromAlocate)
+
+   })    
+
+     let colors = ["Green","Yellow","Red"] 
+
+     colors.map(color =>{ 
+       let obj = {}
+       //Calculates the overall precentage of all the tasks according to its color     
+       if(color === 'Green') obj.avgCompletionPrecentage = Math.floor(greenAvg.reduce((a, b) => a + b, 0) / greenAvg.length)
+       if(color === 'Yellow') obj.avgCompletionPrecentage =Math.floor(yellowAvg.reduce((a, b) => a + b, 0) / yellowAvg.length)
+       if(color === 'Red') obj.avgCompletionPrecentage = Math.floor(redAvg.reduce((a, b) => a + b, 0) / redAvg.length)
+
+        obj.Importance = color
+        obj.fill = color 
+
+        graphData.push(obj)
+    })
+        return graphData
+}
+
+
 export {customFilter,insertNewTaskToPosition,
         timePassed,timeRemainTask,
-        addDays,handleTimeLimit}
+        addDays,handleTimeLimit,
+        taskCompletePrecent,overAllAvgPrecentage}

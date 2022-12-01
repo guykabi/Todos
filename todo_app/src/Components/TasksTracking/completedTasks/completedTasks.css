@@ -1,5 +1,8 @@
 .completedTasksMainDiv{
     text-align: center;
     margin: 0 auto;
-    overflow-y: hidden;
-} 
+}  
+
+.loadingMessageCompleted{
+    margin-top: 10rem;
+}

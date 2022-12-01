@@ -7,6 +7,7 @@ import { addTask } from "../../../utils/ApiUtils";
 import { getItemFromLocal } from "../../../utils/storageUtils";
 import {handleTimeLimit} from '../../../utils/utils'
 import UpdateTask from "../updateTask/updateTask";
+import {useMutation} from "react-query";
 
 const CreateTask = () => {
   const [taskDetails, setTaskDetails] = useState({}); //State that set the new task details
@@ -45,8 +46,10 @@ const CreateTask = () => {
   };
 
   const sendTask = (e) => {
-    //Trigger the modal with 'Confirm task' message and the task sum
+  
     e.preventDefault();
+
+    //Trigger the modal with 'Confirm task' message and the task sum
     setShowFinal(true);
   };
 
@@ -58,45 +61,39 @@ const CreateTask = () => {
   const switchToNewTask = () => {
     //Open the new task form
     setIsNewTask(true);
-  };
+  }; 
 
-  const confirmNewTask = async () => {
-    //Sets the new task to the user tasks on the DB
+  const {mutate:newTask} = useMutation(addTask,{
+      onSuccess: (data)=>{
+        //Update the new data to the context with the new task that just been added
+        ctx.dispatch({ type: "ADDEDTASK", payload: data });
+        setShowFinal(false); //Remove the popup message
+        setIsNewTask(false); //Switch the screen to the start task screen
+      },   
+       onError: (error)=>{
+        setIsError(true)
+        let timer = setTimeout(()=>{
+         setIsError(false)
+        },3000) 
 
+         return () => {//Clears the setTimeout
+         clearTimeout(timer);
+        }
+      }
+      
+  })
+
+  //Sets the new task to the user tasks on the DB
+  const confirmNewTask = () => {
+    
     //Adding extra necessary fields
     let obj = { ...taskDetails };
     obj.userId = userData.data._id;
-    obj.Complete = false;
+    obj.Complete = false; 
+    
+    //Trigger the mutation
+    newTask(obj) 
 
-    try {
-      const res = await addTask(obj); //Add the new task to the DB
-      if (res._id) {
-        //Update the new data to the context with the new task that just been added
-        ctx.dispatch({ type: "ADDEDTASK", payload: res });
-        setShowFinal(false); //Remove the popup message
-        setIsNewTask(false); //Switch the screen to the start task screen
-      } else {
-        setIsError(true);
-        let timer = setTimeout(() => {
-          setIsError(false);
-        }, 3000);
-
-        return () => {
-          //Clears the setTimeout
-          clearTimeout(timer);
-        };
-      }
-    } catch (err) {
-      setIsError(true);
-      let timer = setTimeout(() => {
-        setIsError(false);
-      }, 3000);
-
-      return () => {
-        //Clears the setTimeout
-        clearTimeout(timer);
-      };
-    }
   };
 
   const setNewTask = () => {
