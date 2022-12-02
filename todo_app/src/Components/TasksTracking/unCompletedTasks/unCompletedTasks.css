@@ -5,4 +5,12 @@
 }
 .loadingMessageUnCompleted{
     margin-top: 10rem;
+} 
+.zeroUnCompletedMessage{
+    margin: 0 auto;
+    margin-top: 6rem;
+    font-size: x-large;
+    color: rgba(0, 0, 0, 0.421);
+    cursor: none;
+    padding: 4rem;
 }

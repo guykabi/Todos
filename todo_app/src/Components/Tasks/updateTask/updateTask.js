@@ -52,6 +52,7 @@ const UpdateTask = (props) => {
   },[currentDetails&&currentDetails.Importance])
 
 
+
   //Checking if any detail changed - if indeed changed
   //updates the new updateDetails state which sends only
   //the fields that has changed to the server
@@ -107,6 +108,8 @@ const UpdateTask = (props) => {
     }
   }; 
 
+
+
   const {mutate:update} = useMutation(updateTask,{
     onSuccess: (data)=>{
       if (data._id)
@@ -134,7 +137,6 @@ const UpdateTask = (props) => {
         clearTimeout(timer);
       };
     }
-
   })
 
   const sendUpdate = async (e) => {
@@ -146,8 +148,6 @@ const UpdateTask = (props) => {
     update(obj)
   }; 
 
-
-  
 
   const options = ["Education", "Free time", "Work", "Household management"];
   const selectField = options.map((o, index) => {

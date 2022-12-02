@@ -4,6 +4,7 @@ import { timeRemainTask } from "../../../utils/utils";
 import { taskToDelete } from "../../../utils/ApiUtils";
 import { todoContext } from "../../../Context/TodoContext";
 import Modal from "../../../UI/Modal/Modal";
+import { useMutation } from "react-query";
 
 const SingleTask = (props) => {
   const [triggerDots, setTriggerDots] = useState(false);
@@ -11,7 +12,7 @@ const SingleTask = (props) => {
   const [isThreeDots, setIsThreeDots] = useState(true);
   const [isError, setIsError] = useState(true);
   const ctx = useContext(todoContext);
-  //Giving the exact time remain to the task
+  //Giving the exact time that remain to the task
   let timeRemain = timeRemainTask(props.Upto);
 
   useEffect(() => {
@@ -27,44 +28,40 @@ const SingleTask = (props) => {
     }
   }, [ctx.taskToEdit]);
 
+
   const toEdit = () => {
     setTriggerDots(false);
-    ctx.dispatch({ type: "TASKTOEDIT", payload: props }); //Sets the details of the choosen task to the context
+
+    //Sets the details of the choosen task to the context
+    ctx.dispatch({ type: "TASKTOEDIT", payload: props })
   };
+
 
   const switchOff = () => {
     setTriggerDots(false);
     setTriggerSureToDelete(false);
-  };
+  }; 
 
-  const deleteTask = async () => {
-    try {
-      let resp = await taskToDelete(props._id);
-      if (resp === "Delete") {
-        ctx.dispatch({ type: "TASKTODELETE", payload: props._id });
-        switchOff();
-      } else {
-        setIsError(false);
-        let timer = setTimeout(() => {
-          setIsError(true);
-        }, 3000);
 
-        return () => {
-          //Clears the setTimeout
-          clearTimeout(timer);
-        };
-      }
-    } catch (err) {
+  const {mutate:toDelete} = useMutation(taskToDelete,{
+    onSuccess:(data)=>{
+      ctx.dispatch({ type: "TASKTODELETE", payload: props._id });
+      switchOff();
+    }, 
+    onError:(error)=>{
       setIsError(false);
       let timer = setTimeout(() => {
         setIsError(true);
       }, 3000);
 
       return () => {
-        //Clears the setTimeout
         clearTimeout(timer);
       };
     }
+  })
+
+  const deleteTask = () => { 
+   toDelete(props._id)
   };
 
   return (

@@ -22,7 +22,7 @@ const SingleUnCompletedTask = (props) => {
   const dateInputRef = useRef()
 
     
-  //Date format
+    //Date format
     const formatter = new Intl.DateTimeFormat("en-GB", {
         year: "2-digit",
         month: "2-digit",
@@ -62,7 +62,7 @@ const SingleUnCompletedTask = (props) => {
            clearTimeout(timer);
           }
         }
-      })
+     })
       
       //Switch screen to restore task
      const chooseNewDate = () =>{
@@ -95,7 +95,8 @@ const SingleUnCompletedTask = (props) => {
          }
       } 
 
-      const restoringTask = () =>{//Sends the restored task to the server
+      const restoringTask = (e) =>{//Sends the restored task to the server
+        e.preventDefault()
         let obj = {...taskDetails}
         //Adds field that track if the task was already restored
         //Task has only one time to restored!
@@ -104,8 +105,6 @@ const SingleUnCompletedTask = (props) => {
         //Trigger the mutation 
         restore(obj)   
       } 
-
-   
 
   return (
     <div className='oneUnTask'>
@@ -120,6 +119,7 @@ const SingleUnCompletedTask = (props) => {
                 Origin date to complete:  {formatter.format(Date.parse(props.taskData.Upto))} <br />  
               </div>
         </div>:<div className='showtask'>
+          <form onSubmit={restoringTask}>
            <h4>Select a new date and Importance level</h4> 
            <input 
             required
@@ -141,6 +141,7 @@ const SingleUnCompletedTask = (props) => {
             name='Importance'
             onChange={handleRestoreTask}  /> &nbsp;
            <input type="date"
+            required
             name='Upto'
             ref={dateInputRef}
             min={today}
@@ -148,8 +149,9 @@ const SingleUnCompletedTask = (props) => {
             onChange={handleRestoreTask} /> <br />
 
            {isError&&<span>Error while sending!</span>} <br/>
-           <Button click={restoringTask} title='Restore task'/>
+           <Button type='submit' title='Restore task'/>
            <Button click={switchBack} title='Return'/>
+           </form>
           </div>}
     </div>
   )

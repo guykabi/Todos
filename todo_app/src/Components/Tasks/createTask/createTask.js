@@ -163,8 +163,7 @@ const CreateTask = () => {
             <span className="importanceLevel">Choose importance level:</span>
             <span className="greenRadio">gg</span>
             <span className="greenColorData">
-              <strong>Green</strong> means - task with no time limit<br />
-              and great to have it
+              <strong>Green</strong> means - task with 30 days time limit<br />
             </span>
             <input
               onChange={handleTask}
@@ -172,7 +171,7 @@ const CreateTask = () => {
               value="Green"
               name="Importance"
               required
-            />{" "}
+            />
             &nbsp;&nbsp;
             <span className="yellowRadio">gg</span>
             <span className="yellowColorData">
@@ -210,7 +209,7 @@ const CreateTask = () => {
               min={today}
               max={maxDaysLimit}
               required
-            />{" "}
+            />&nbsp;
             <br /> <br />
             <button
               onClick={() => {
@@ -231,7 +230,7 @@ const CreateTask = () => {
             <div>{taskDetails.Task}</div> <br />
             <div className="dateimportance">
               <div>
-                Level -{" "}
+                Level -&nbsp;
                 <span
                   style={{
                     borderRadius: "8px",
@@ -242,19 +241,18 @@ const CreateTask = () => {
                 >
                   {taskDetails.Importance}
                 </span>
-              </div>{" "}
+              </div>&nbsp;
               &nbsp;&nbsp;
               <div>
                 Up to - {taskDetails.Upto ? taskDetails.Upto : today}
-              </div>{" "}
+              </div>&nbsp;
               <br />
               {isError && (
                 <span>
                   <strong>Unable to add task</strong>
                 </span>
-              )}{" "}
-              <br />
-              <br />
+              )}&nbsp;
+              <br /><br />
               <button onClick={switchOff}>cancel</button>&nbsp;
               <button onClick={confirmNewTask}>Confirm</button>
             </div>

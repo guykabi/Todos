@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import './completedTasks.css'
 import { getUserData } from "../../../utils/ApiUtils";
 import SingleCompleteTask from "../singleCompleteTask/singleCompleteTask";
 import Button from "../../../UI/Button/Button";
@@ -16,11 +17,12 @@ const CompletedTasks = () => {
 
   
 
-  const {isError,isLoading} =useQuery('userCompleted',()=>getUserData(userData.data._id),{
-    onSuccess:(data)=>{
-      setUserDetails(data)
-    }
-   })
+  const {isError,isLoading} =useQuery('userCompleted',
+    ()=>getUserData(userData.data._id),{
+        onSuccess:(data)=>{
+          setUserDetails(data)
+         }
+       })
 
   const toAllCompletedTasks = () => {
     setIsAllOrGraph(true);
@@ -50,6 +52,15 @@ const CompletedTasks = () => {
                <Button title='return to login' click={()=>navigate('/')}/>
               </div>
             )
+        } 
+
+        if(userDetails.TasksCompleted.length === 0)
+        {
+          return(
+            <div className="zeroCompletedMessage">
+              <h2> You dont have any completed task!</h2>
+            </div>
+          )
         }
 
   return (

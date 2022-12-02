@@ -3,6 +3,8 @@ import { TodoContextProvider } from "./Context/TodoContext";
 import CompletedTasks from "./Components/TasksTracking/completedTasks/completedTasks";
 import UnCompletedTasks from "./Components/TasksTracking/unCompletedTasks/unCompletedTasks";
 import {  Routes, Route } from 'react-router-dom';
+import Reset from "./Components/Reset/reset";
+import Signup from "./Components/Signup/signup";
 import React,{lazy,Suspense} from 'react'
 
 
@@ -19,6 +21,8 @@ function App() {
         <Suspense fallback={<h1 style={{textAlign:'center',marginTop:'8rem'}}>Loading...</h1>}>
          <Routes>
          <Route path="/" element={<Login/>}/>
+         <Route path="/reset" element={<Reset/>}/>
+         <Route path="/signup" element={<Signup/>}/>
          <Route path="/Home" element={<Home/>}>
            <Route path="tasks" element={<Tasks/>}/>
            <Route path="taskstrack" element={<TasksTracking/>}>

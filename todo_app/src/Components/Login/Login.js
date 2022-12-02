@@ -1,5 +1,6 @@
 import "./Login.css";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -20,7 +21,7 @@ const Login = () => {
       clearLocal()
     
   }, []);
-
+  
   
 
   const handleLoginSubmit = async (e) => {
@@ -42,7 +43,8 @@ const Login = () => {
              console.log('Error handled')
        }
    
-  };
+  }
+
   return (
     <div className="mainLoginDiv">
       <div className="formDiv">
@@ -78,7 +80,10 @@ const Login = () => {
             <ClipLoader color={"gray"} speedMultiplier="1" size={30} />
           )}
           {error && <div>{error}</div>}
-          <br />
+          <br />  
+         <span className="linkTo"><Link to={'reset'}>Forgot password?</Link></span>&nbsp;&nbsp;
+         <span className="linkTo"><Link to={'signup'}>Don't have an account?</Link></span>
+          <br/><br/>
           <Button disable={isLoading} title='Login' type="submit"/>
           <br />
         </form>

@@ -41,6 +41,15 @@ const UnCompletedTasks = () => {
                <Button title='return to login' click={()=>navigate('/')}/>
               </div>
             )
+        } 
+
+        if(userDetails.TasksUnCompleted.length === 0)
+        {
+          return(
+            <div className="zeroUnCompletedMessage">
+              <h2> You dont have any unCompleted task!</h2>
+            </div>
+          )
         }
 
   return (

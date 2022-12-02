@@ -1,6 +1,12 @@
 import axios from "axios"
 
 
+const signUpUser =async (user) =>{
+   const {data:res} = await axios.post('/users',user)
+   return res.Data
+}
+
+
 const checkUserCredentials = async (credentials) =>{
    try{
       const {data:res} = await axios.post('/users/auth/',credentials)
@@ -47,25 +53,16 @@ const updateTask = async (task)=>{
     
 }
 
-const taskToDelete = async (id)=> {
-     try{
-         const {data:res} =await axios.delete('/tasks/'+id)
-         if(res === 'Delete')
-         {
-            return res
-         }
-     }catch(err)
-     {
-         return err.message
-     }
+const taskToDelete = async (id)=> {  
+         const {data:res} =await axios.delete('/tasks/'+id)    
+            return res    
 }  
 
 const restoreTask =async (obj) =>{
    const {data:res} = await axios.post('/tasks/restoretask',obj) 
-   console.log(res)
     return res 
 }
 
-export {checkUserCredentials,getAllUserTasks,
+export {signUpUser,checkUserCredentials,getAllUserTasks,
         getUserData,addTask,
         updateTask,taskToDelete,restoreTask}
