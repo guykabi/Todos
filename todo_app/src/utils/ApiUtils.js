@@ -1,21 +1,34 @@
 import axios from "axios"
-
+import emailjs from '@emailjs/browser'
 
 const signUpUser =async (user) =>{
    const {data:res} = await axios.post('/users',user)
    return res.Data
-}
+} 
 
 
 const checkUserCredentials = async (credentials) =>{
    try{
-      const {data:res} = await axios.post('/users/auth/',credentials)
+      const {data:res} = await axios.post('/users/auth',credentials)
       return res
    }catch(err)
    {
       return err.message
    }
 }
+  
+
+const emailCheck =async (email) =>{
+   const {data:res} = await axios.post('/users/email-check',email)
+   return res
+} 
+
+const updatePassword = async (details) => {
+   
+   const {data:res} = await axios.patch('/users/'+details.id,details.body)
+   return res
+}
+
 
 const getAllUserTasks =async (id,token)=>{
 
@@ -61,8 +74,10 @@ const taskToDelete = async (id)=> {
 const restoreTask =async (obj) =>{
    const {data:res} = await axios.post('/tasks/restoretask',obj) 
     return res 
-}
+} 
 
-export {signUpUser,checkUserCredentials,getAllUserTasks,
-        getUserData,addTask,
-        updateTask,taskToDelete,restoreTask}
+
+
+export {signUpUser,emailCheck,checkUserCredentials,updatePassword,
+       getAllUserTasks,getUserData,addTask,
+       updateTask,taskToDelete,restoreTask}

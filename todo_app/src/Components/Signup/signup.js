@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import { useMutation } from 'react-query'
 import { signUpUser } from '../../utils/ApiUtils'
 import SubmitButton from '../../UI/submitButton/submitButton'
+import Button from '../../UI/Button/Button'
 import {useNavigate} from 'react-router-dom'
 
 const Signup = () => {  
@@ -65,7 +66,11 @@ const Signup = () => {
     addUser(values)
   }
  }) 
-  
+ 
+ const toLogin = () =>{
+  navigate('/')
+ } 
+
  if(isUserAdded)
  {
   return(
@@ -129,9 +134,9 @@ const Signup = () => {
           onChange={handleChange}
           onBlur={handleBlur} />
           {touched.Email&&errors.Email ? <p>{errors.Email}</p> : null}
-        </div>
+        </div> <br/>
         {isError&& <p style={{color:'red'}}>Unable to create user, try again</p>}
-        <SubmitButton type='submit' title='submit'/>
+        <SubmitButton type='submit' title='submit'/><Button  title='Return' click={toLogin}/>
       </form>
       </div>
     </>

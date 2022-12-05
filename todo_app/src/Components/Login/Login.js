@@ -1,15 +1,20 @@
 import "./Login.css";
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect,useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useMutation } from "react-query";
 import useLogin from "../../hooks/useLogin";
 import ClipLoader from "react-spinners/ClipLoader";
-import Button from "../../UI/Button/Button";
-import {getItemFromLocal,clearLocal} from '../../utils/storageUtils'
+import SubmitButton from "../../UI/submitButton/submitButton";
+import { emailCheck } from "../../utils/ApiUtils";
+import {getItemFromLocal,setItemToLocal,clearLocal} from '../../utils/storageUtils'
 
 const Login = () => {
   const [credentials, setCredentials] = useState({}); //Email and password that sends to the server for checking
   const { login, isLoading, error } = useLogin(); //Custome hook for checking user existence
+  const [triggerEmailWindowToReset,setTriggerEmailWindowToReset]=useState(false)
+  const [emailForReset,setEmailForReset]=useState(null)
+  const [placeHolderText,setPlaceHolderText]=useState('Insert your email')
+  const inputRef = useRef()
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,12 +23,10 @@ const Login = () => {
     if (!getItemFromLocal("userData")) return
       
       //Clear the user data when user coming back to the login page - backup to the logout from Home page
-      clearLocal()
-    
+      clearLocal()  
   }, []);
   
   
-
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
  
@@ -43,6 +46,36 @@ const Login = () => {
              console.log('Error handled')
        }
    
+  }  
+
+  const {mutate:checkEmail} = useMutation(emailCheck,{
+    onSuccess:async (data)=>{
+      if(data === 'Email does not exist')
+      {
+        inputRef.current.value = ''
+        setPlaceHolderText(data)
+        setTimeout(()=>{
+          setPlaceHolderText('Insert your email')
+        },3000)
+        return
+      }  
+       //Sets the encrypted code the user get via email
+       setItemToLocal('emailCode',data) 
+       navigate('reset')
+    },
+    onError: (error)=>{
+       inputRef.current.value = ''
+       setPlaceHolderText('Something went wrong...')
+       setTimeout(()=>{
+        setPlaceHolderText('Insert your email')
+      },3000)
+    },
+  })
+
+  const sendCodeToEmail = (e) =>
+  { 
+    e.preventDefault()
+    checkEmail(emailForReset)
   }
 
   return (
@@ -75,18 +108,38 @@ const Login = () => {
               })
             }
           />
-          <br /> <br />
-          {isLoading && (
-            <ClipLoader color={"gray"} speedMultiplier="1" size={30} />
-          )}
-          {error && <div>{error}</div>}
-          <br />  
-         <span className="linkTo"><Link to={'reset'}>Forgot password?</Link></span>&nbsp;&nbsp;
-         <span className="linkTo"><Link to={'signup'}>Don't have an account?</Link></span>
-          <br/><br/>
-          <Button disable={isLoading} title='Login' type="submit"/>
           <br />
-        </form>
+          {isLoading && (
+            <>
+             <ClipLoader color={"gray"} speedMultiplier="1" size={30} />
+             <br/>
+            </>
+          )} 
+          {error && <div>{error}</div>}
+          <SubmitButton disable={isLoading} title='Login' type="submit"/>
+          <br />
+        </form> <br/>
+        <span className="linkToReset" 
+         onClick={()=>setTriggerEmailWindowToReset(!triggerEmailWindowToReset)}
+         >Forgot password?
+         </span>&nbsp;&nbsp;
+
+         <span className="linkTo"><Link to={'signup'}>Don't have an account?</Link></span>
+          <br/>
+        {triggerEmailWindowToReset&&<div>
+          <br/>
+            <form onSubmit={sendCodeToEmail}>
+              <input 
+              required
+              ref={inputRef}
+              type='email' 
+              name="Email"
+              placeholder={placeHolderText}
+              onChange={(e)=>setEmailForReset({...emailForReset,[e.target.name]:e.target.value})}/>
+              <button type="submit" className="toResetBtn">Send code</button>   
+            </form> 
+            <br/> <br/>    
+          </div>}
       </div>
     </div>
   );

@@ -2,6 +2,9 @@
     text-align: center;
     margin: 0 auto;
     overflow-y: hidden;
+} 
+.unCompletedTasksMainDiv h2{
+    text-decoration: underline;
 }
 .loadingMessageUnCompleted{
     margin-top: 10rem;

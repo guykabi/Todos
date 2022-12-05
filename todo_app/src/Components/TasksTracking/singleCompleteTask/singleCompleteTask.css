@@ -5,8 +5,13 @@
     border-radius: 8px;
     border: none;
     text-align: center;
-    margin: 0.6rem;
+    margin: 1.2rem;
     width: 30%;
     height: 20%;
     box-shadow: 1px 1px 4px 4px rgba(57, 55, 55, 0.350);
+    transition: 0.6s;
+}
+
+.oneTask:hover{
+    transform: scale(1.1);
 }

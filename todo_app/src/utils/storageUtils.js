@@ -10,6 +10,10 @@ const setItemToLocal = (key,value)=>{
 
 const clearLocal = () =>{
     localStorage.clear()
+} 
+
+const clearField = (fieldName) =>{
+    localStorage.removeItem(fieldName)
 }
 
- export  {setItemToLocal,getItemFromLocal,clearLocal} 
+ export  {setItemToLocal,getItemFromLocal,clearLocal,clearField} 

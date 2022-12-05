@@ -30,7 +30,7 @@ const Home = () => {
      setIsTokenValid(true)
   }
   
-  const {isLoading} = useQuery(
+  const {isLoading,data} = useQuery(
       'tasksUser',()=>getAllUserTasks(userData.data._id,userData.accessToken),
       {onSuccess,onError}) 
 

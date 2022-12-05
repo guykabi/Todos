@@ -24,11 +24,37 @@
     background-color: rgba(255, 255, 255, 0);
     border: none;
     border-bottom: 1px solid black;
-} 
+}  
+.formDiv input::placeholder{
+    color: rgba(0, 0, 0, 0.752);
+}
+
 
 .formDiv a{
     font-size: small;
 } 
 .className{
     width: 40%;
+} 
+
+.linkToReset{
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    font-size: small;
+} 
+.toResetBtn{
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+    margin-left: -4.5rem;
+    width: 4.5rem;
+    background-color: rgba(255, 255, 255, 0);
+    font-weight: bold;
+    font-size: x-small;
+    transition: 0.4s;
+    border: none;
+} 
+.toResetBtn:hover{
+    transform: scale(1.05);
 }

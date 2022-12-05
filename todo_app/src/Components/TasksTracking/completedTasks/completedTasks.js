@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './completedTasks.css'
 import { getUserData } from "../../../utils/ApiUtils";
 import SingleCompleteTask from "../singleCompleteTask/singleCompleteTask";
@@ -13,24 +13,35 @@ const CompletedTasks = () => {
   const userData = getItemFromLocal("userData")
   const [userDetails, setUserDetails] = useState(null);
   const [isAllOrGraph, setIsAllOrGraph] = useState(true);
+  const [numOfTasks,setNumOfTasks]=useState(4)
   const navigate = useNavigate()
+  let showMoreAppearenceRule = null
 
-  
+   if(userDetails)
+   {
+    showMoreAppearenceRule = (userDetails.TasksCompleted.length > 4  &&  userDetails.TasksCompleted.length > numOfTasks)
+   }
+ 
 
   const {isError,isLoading} =useQuery('userCompleted',
     ()=>getUserData(userData.data._id),{
+
         onSuccess:(data)=>{
           setUserDetails(data)
          }
        })
 
+
   const toAllCompletedTasks = () => {
     setIsAllOrGraph(true);
   };
 
+
   const toGraph = () => {
     setIsAllOrGraph(false);
-  };
+  }; 
+
+
 
   if(isLoading)
    {
@@ -54,14 +65,14 @@ const CompletedTasks = () => {
             )
         } 
 
-        if(userDetails.TasksCompleted.length === 0)
+        if(userDetails&&userDetails.TasksCompleted.length === 0)
         {
           return(
             <div className="zeroCompletedMessage">
               <h2> You dont have any completed task!</h2>
             </div>
           )
-        }
+        } 
 
   return (
     <>
@@ -71,15 +82,20 @@ const CompletedTasks = () => {
           <Button title="All" click={toAllCompletedTasks} />
           &nbsp;
           <Button title="Graph" click={toGraph} />
-        </div>{" "}
+        </div>&nbsp;
         <br />
         {isAllOrGraph ? (
           <div>
             {userDetails &&
-              userDetails.TasksCompleted.map((u, index) => {
+             userDetails.TasksCompleted.slice(0,numOfTasks).map((u, index) => {
                 return <SingleCompleteTask key={index} taskData={u} />;
-              })}{" "}
+              })}
             <br />
+            {numOfTasks>4&&
+            <button className="addTasksToShow" onClick={()=>setNumOfTasks(numOfTasks-4)}>Show less</button>}
+            {showMoreAppearenceRule&&showMoreAppearenceRule&&
+            <button className="addTasksToShow"  onClick={()=>setNumOfTasks(numOfTasks+4)}>Show more</button>
+            }
           </div>
         ) : (
           <div>

@@ -143,7 +143,7 @@ const UpdateTask = (props) => {
     e.preventDefault(); 
     let obj = {...updateDetails}
     obj._id = ctx.taskToEdit._id
-
+    
     //Trigger the mutation
     update(obj)
   }; 

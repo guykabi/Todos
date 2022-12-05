@@ -16,7 +16,8 @@ const UnCompletedTasks = () => {
     const [userDetails,setUserDetails]=useState(null)
     const navigate = useNavigate()
    
-   const {isError,isLoading} =useQuery('userUncompleted',()=>getUserData(userData.data._id),{
+   const {isError,isLoading} =useQuery('userUncompleted',()=>getUserData(userData.data._id),
+   {
     onSuccess:(data)=>{
       setUserDetails(data)
     }
@@ -43,7 +44,7 @@ const UnCompletedTasks = () => {
             )
         } 
 
-        if(userDetails.TasksUnCompleted.length === 0)
+        if(userDetails&&userDetails.TasksUnCompleted.length === 0)
         {
           return(
             <div className="zeroUnCompletedMessage">
