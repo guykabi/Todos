@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router() 
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
+const {sendEmail} = require('../utils')
 
 
 
@@ -18,6 +18,17 @@ router.get('/:id',async(req,resp,next)=>{
     }
 }) 
 
+
+router.post('/',async(req,resp,next)=>{ //Adding a new user
+  const user = new userModel(req.body)
+  try{
+         const data = await user.save()
+         return resp.status(200).json({message:'Added Successfully',Data:data})
+  }catch(err)
+  {
+         next(new Error('Error', err))
+  }
+}) 
 
 
 router.post('/auth',async(req,resp,next)=>{ //Check is user exists - if does return the user data and token
@@ -44,18 +55,33 @@ router.post('/auth',async(req,resp,next)=>{ //Check is user exists - if does ret
        {
           next(new Error('Error', err))
        }
+ })  
+
+
+ router.post('/email-check',async(req,resp,next)=>{ 
+
+ const {Email} = req.body
+ try{
+
+   let data = await userModel.findOne({Email})
+
+   if(!data)  return resp.status(200).json('Email does not exist') 
+   
+    let code = await sendEmail(data)
+
+    //If there is a problem sending the email
+    if(code === 'Error') return next(new Error('Network problem'))
+
+    return resp.status(200).json(code) 
+
+   }catch(err)
+    {
+      return next(err)
+    }
  })
 
-router.post('/',async(req,resp,next)=>{ //Adding a new user
-    const user = new userModel(req.body)
-    try{
-           const data = await user.save()
-           return resp.status(200).json({message:'Added Successfully',Data:data})
-    }catch(err)
-    {
-           next(new Error('Error', err))
-    }
-}) 
+
+
 
 router.put('/:id',async(req,resp,next)=>{//Update all details except the password
     try{
@@ -66,7 +92,9 @@ router.put('/:id',async(req,resp,next)=>{//Update all details except the passwor
   }
 })
 
+
 router.patch('/:id',async(req,resp,next)=>{//Changing only the password
+        
        //Crypt the changed password
        const salt = await bcrypt.genSalt(10)
        const passwordHash = await bcrypt.hash(req.body.Password,salt)
