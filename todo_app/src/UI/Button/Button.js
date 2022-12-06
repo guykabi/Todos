@@ -12,7 +12,7 @@ const Button = (props) => {
   } 
 
   return (
-    <button className='globalBtn' type={props.type&&props.type} disabled={props.disable} onClick={clickEvent}>
+    <button className={props.disable?'whenDisable':'globalBtn'} type={props.type&&props.type} disabled={props.disable} onClick={clickEvent}>
         {props.title}
     </button>
   )

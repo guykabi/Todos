@@ -5,6 +5,7 @@ import { todoContext } from "../../../Context/TodoContext";
 import { updateTask } from "../../../utils/ApiUtils";
 import { handleTimeLimit } from "../../../utils/utils";
 import { useMutation } from "react-query";
+import Button from "../../../UI/Button/Button";
 
 const UpdateTask = (props) => {
   const ctx = useContext(todoContext); //TodoContext
@@ -23,9 +24,11 @@ const UpdateTask = (props) => {
       //Load the requested task to edit
       setCurrentDetails(ctx.taskToEdit);
       setEnableBtn(false);
+      //Zeroing the state if there was any data from previous task edited
       setUpdateDetails(null);
     }
   }, [ctx.taskToEdit]); 
+
 
 
   useEffect(()=>{
@@ -33,7 +36,7 @@ const UpdateTask = (props) => {
       
       //Function that return the max date which the calendar
       // will enable choosing dates - based on task's importance level
-      let dateLimit =  handleTimeLimit(currentDetails.Importance,today)
+      let dateLimit = handleTimeLimit(currentDetails.Importance,today)
 
       //Sets the max date to enable on the date input
       setMaxDaysLimit(dateLimit)
@@ -41,11 +44,14 @@ const UpdateTask = (props) => {
       //Sets back the original date of the task
       setCurrentDetails({ ...currentDetails,Upto:ctx.taskToEdit.Upto});
       
+      
       if(!updateDetails) return
-      //Checks if there was any chanage made in the task edit form
+      //Checks if there was any change made in the task edit form
       //if not, unable the submit button
       if(Object.keys(updateDetails).length === 1 && !Object.keys(updateDetails).includes('Importance') ) 
       {
+        setUpdateDetails({ ...updateDetails,Upto:ctx.taskToEdit.Upto});
+        
         setEnableBtn(false)
       }
 
@@ -57,7 +63,7 @@ const UpdateTask = (props) => {
   //updates the new updateDetails state which sends only
   //the fields that has changed to the server
   const handleTaskChange = (e) => {
-    
+    console.log(updateDetails)
     const { name, value } = e.target;
 
     //Update only the current data that present to the user within the fields
@@ -74,36 +80,38 @@ const UpdateTask = (props) => {
         setUpdateDetails(newUpdateDetails);
 
         //When there is nothing changed again -
-        //the state of updateDetails returned to be empty again
+        //Unable the submit button
         if (Object.keys(updateDetails).length === 1) {
-          setEnableBtn(false) //Unable the submit button
+          return setEnableBtn(false) //Unable the submit button
         }
 
         if (value === "false") {
-          setUpdateDetails(null); //Clear the state when switch back to false
-          setWhenCompleteMark(false); //Switch off the disabled on each field
-          return setEnableBtn(false);
+          setUpdateDetails(null) //Clears the updateDetails state when switch back to false
+          setCurrentDetails(ctx.taskToEdit) //Showing back the origin task's details
+          setWhenCompleteMark(false) //Switch on the disabled mode on each field
+          return setEnableBtn(false)
         }
       }
     }
+
     //If the user choose/change a value that isn't exsits yet
     if (ctx.taskToEdit[name] !== value) {
       if (value === "true") {
 
-        //Prepare the new object to send to the server
-        let obj = { ...currentDetails };
-        obj.Complete = true;
+         //Prepare the new object to send to the server
+         let obj = { ...currentDetails };
+         obj.Complete = true;
 
          //Task date of creation field
-        obj.OriginCreate = currentDetails.createdAt;
+         obj.OriginCreate = currentDetails.createdAt;
 
-        setUpdateDetails(obj);
-        setWhenCompleteMark(true); //Unable all the form fields
-        setEnableBtn(true); //enable the submit button
+         setUpdateDetails(obj);
+         setWhenCompleteMark(true); //Unable all the form fields
+         setEnableBtn(true); //enable the submit button
 
       } else {
-        setUpdateDetails({ ...updateDetails, [name]: value });
-        setEnableBtn(true);
+         setUpdateDetails({ ...updateDetails, [name]: value });
+         setEnableBtn(true);
       }
     }
   }; 
@@ -114,8 +122,9 @@ const UpdateTask = (props) => {
     onSuccess: (data)=>{
       if (data._id)
       {
-          //If task was updated but not completed
-          ctx.dispatch({ type: "UPDATETASK", payload: data }); //Update the new data to the context with the new task that just been added
+          //If task was updated but not completed,
+          //updates the exsisting data with the new edited task
+          ctx.dispatch({ type: "UPDATETASK", payload: data }); 
           props.onClose(); //Switch to the start window
       } 
       if(data === "Completed task added and deleted")
@@ -125,8 +134,8 @@ const UpdateTask = (props) => {
           props.onClose(); //Switch to the start window
       }
     }, 
-    onError: () =>{
 
+    onError: () =>{
       setIsErrorUpdate(true)
       let timer = setTimeout(() => {
         setIsErrorUpdate(false);
@@ -150,10 +159,10 @@ const UpdateTask = (props) => {
 
 
   const options = ["Education", "Free time", "Work", "Household management"];
+  //Rendering options tags to the select input
   const selectField = options.map((o, index) => {
-    //Rendering options tags to the select input
     return (
-      <option key={index} value={o}>
+      <option key={index}  value={o}>
         {o}
       </option>
     );
@@ -164,8 +173,10 @@ const UpdateTask = (props) => {
       <br />
       {currentDetails && (
         <form onSubmit={sendUpdate} className="editForm">
+          <h2>Any change to make ?</h2><br/>
           <label htmlFor="Topic">Topic: </label>
           <select
+          className="updateSelectInput"
             required
             value={currentDetails.Topic}
             disabled={whenCompleteMark}
@@ -174,9 +185,8 @@ const UpdateTask = (props) => {
             name="Topic"
           >
             {selectField}
-          </select>{" "}
-          <br />
-          <br />
+          </select>&nbsp;
+          <br /><br />
           <label htmlFor="Task">Task: </label>
           <input
             type="text"
@@ -187,30 +197,26 @@ const UpdateTask = (props) => {
             name="Task"
             value={currentDetails.Task}
             checked={true}
-          />
-          <br />
-          <br />
-          <span className="importanceLevel">Choose importance level:</span>
+          /><br /><br />
+          <span className="importanceLevel">Importance level:</span>
           <span className="greenRadio">gg</span>
           <span className="greenColorData">
-            <strong>Green</strong> means - task that is great to complete <br />
-            and there is no pressure to finish!
+            <strong>Green</strong> means - task with 30 days time limit<br />
           </span>
           <input
             onChange={handleTaskChange}
+            className='greenOne'
             type="radio"
             disabled={whenCompleteMark}
             value="Green"
             checked={currentDetails.Importance === "Green"}
             name="Importance"
             required
-          />{" "}
-          &nbsp;&nbsp;
+          />&nbsp;&nbsp;
           <span className="yellowRadio">gg</span>
           <span className="yellowColorData">
-            <strong>Yellow</strong> means - task that need to be completed{" "}
-            <br />
-            in the near future!
+              <strong>Yellow</strong> means - task that need to be completed<br />
+              up to 14 days
           </span>
           <input
             onChange={handleTaskChange}
@@ -219,12 +225,11 @@ const UpdateTask = (props) => {
             value="Yellow"
             name="Importance"
             checked={currentDetails.Importance === "Yellow"}
-          />
-          &nbsp;&nbsp;
+          />&nbsp;&nbsp;
           <span className="redRadio">gg</span>
           <span className="redColorData">
-            <strong>Red</strong> means - task that is must be completed <br />
-            as soon as possible!
+              <strong>Red</strong> means - task that need to be completed<br />
+              up to 7 days
           </span>
           <input
             onChange={handleTaskChange}
@@ -233,10 +238,11 @@ const UpdateTask = (props) => {
             value="Red"
             checked={currentDetails.Importance === "Red"}
             name="Importance"
-          />{" "}
+          />&nbsp;
           <br /> <br />
           <label htmlFor="Upto">Up to: </label>
           <input
+            className="updateDateInput"
             type="date"
             required
             id="Upto"
@@ -272,13 +278,10 @@ const UpdateTask = (props) => {
               <strong>Unable to update task</strong>
             </span>
           )}
-          <br />
-          <br />
-          <button type="submit" disabled={!enableBtn}>
-            Update
-          </button>
+          <br /><br />
+          <Button type="submit" title='Update' disable={!enableBtn}/>
           &nbsp;
-          <button onClick={() => props.onClose()}>New task</button>
+          <Button title='New task' click={() => props.onClose()}/>
         </form>
       )}
     </div>

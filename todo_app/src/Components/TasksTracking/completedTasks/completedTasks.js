@@ -79,7 +79,7 @@ const CompletedTasks = () => {
       <div className="completedTasksMainDiv">
         <h2>{userData.data.Name}'s past tasks</h2> <br />
         <div>
-          <Button title="All" click={toAllCompletedTasks} />
+          <Button title="All my tasks" click={toAllCompletedTasks} />
           &nbsp;
           <Button title="Graph" click={toGraph} />
         </div>&nbsp;

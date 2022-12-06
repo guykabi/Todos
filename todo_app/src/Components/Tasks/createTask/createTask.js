@@ -8,6 +8,7 @@ import { getItemFromLocal } from "../../../utils/storageUtils";
 import {handleTimeLimit} from '../../../utils/utils'
 import UpdateTask from "../updateTask/updateTask";
 import {useMutation} from "react-query";
+import Button from '../../../UI/Button/Button'
 
 const CreateTask = () => {
   const [taskDetails, setTaskDetails] = useState({}); //State that set the new task details
@@ -38,7 +39,7 @@ const CreateTask = () => {
       setMaxDaysLimit(dateLimit)
     
       //Changes the value of the date input to the current date
-      dateInputRef.current.value = today
+      dateInputRef.current.value = null
 
       setTaskDetails({ ...taskDetails, Upto: today , [name]:value });
     }
@@ -100,17 +101,12 @@ const CreateTask = () => {
     ctx.dispatch({ type: "TASKTOEDIT", payload: null });
   };
 
+  //The form to edit the requested task
   if (ctx.taskToEdit) {
-    return <UpdateTask onClose={setNewTask} />; //The requested task form to edit
+    return <UpdateTask onClose={setNewTask} /> 
   }
 
-  const options = [
-    null,
-    "Education",
-    "Free time",
-    "Work",
-    "Household management",
-  ];
+  const options = [null,"Education","Free time","Work", "Household management"];
   const selectField = options.map((o, index) => {
     //Rendering options tags to the select input
     return (
@@ -122,8 +118,7 @@ const CreateTask = () => {
 
   return (
     <div className="mainDiv">
-      <br />
-      <br />
+      <br /><br />
       {!isNewTask && (
         <div>
           <h3>Ok, lets beggin...</h3> <br />
@@ -139,16 +134,15 @@ const CreateTask = () => {
       )}
       {isNewTask && (
         <div className="taskForm">
-          <h2>what do you up next?</h2>
+          <h2>What do you up next?</h2>
           <br /> <br />
           <form onSubmit={sendTask}>
             <label className="selectTopicLabel" htmlFor="Topic">
               Select the topic:
             </label>
-            <select required onChange={handleTask} id="Topic" name="Topic">
+            <select required className="createSelectInput" onChange={handleTask} id="Topic" name="Topic">
               {selectField}
-            </select>{" "}
-            <br /> <br />
+            </select>&nbsp; <br /> <br />
             <textarea
               name="Task"
               onChange={handleTask}
@@ -158,9 +152,8 @@ const CreateTask = () => {
               rows="4"
               placeholder="What is the task?"
               required
-            />{" "}
-            <br /> <br />
-            <span className="importanceLevel">Choose importance level:</span>
+            />&nbsp; <br /> <br />
+            <span className="importanceLevel">Importance level:</span>
             <span className="greenRadio">gg</span>
             <span className="greenColorData">
               <strong>Green</strong> means - task with 30 days time limit<br />
@@ -176,7 +169,7 @@ const CreateTask = () => {
             <span className="yellowRadio">gg</span>
             <span className="yellowColorData">
               <strong>Yellow</strong> means - task that need to be completed<br />
-              up to 14 days
+                      up to 14 days
             </span>
             <input
               onChange={handleTask}
@@ -188,37 +181,30 @@ const CreateTask = () => {
             <span className="redRadio">gg</span>
             <span className="redColorData">
               <strong>Red</strong> means - task that need to be completed<br />
-              up to 7 days
+                      up to 7 days
             </span>
             <input
               onChange={handleTask}
               type="radio"
               value="Red"
               name="Importance"
-            />{" "}
-            <br /> <br />
+            />&nbsp;<br /> <br />
             <label className="dateLable" htmlFor="date">
-              Choose date to complete:
+             Date to complete:
             </label>
             <input
               type="date"
               onChange={handleTask}
+              className='createDateInput'
               name="Upto"
               id="date"
               ref={dateInputRef}
               min={today}
               max={maxDaysLimit}
               required
-            />&nbsp;
-            <br /> <br />
-            <button
-              onClick={() => {
-                setIsNewTask(false);
-              }}
-            >
-              Return
-            </button>
-            &nbsp;<button type="submit">Send</button>
+            />&nbsp; <br /> <br />
+            <Button title='Return' click={() => {setIsNewTask(false)}}/>&nbsp;
+            <Button title='Make me task' type="submit"/>
           </form>
         </div>
       )}
@@ -230,7 +216,7 @@ const CreateTask = () => {
             <div>{taskDetails.Task}</div> <br />
             <div className="dateimportance">
               <div>
-                Level -&nbsp;
+                Importance -
                 <span
                   style={{
                     borderRadius: "8px",
@@ -241,20 +227,17 @@ const CreateTask = () => {
                 >
                   {taskDetails.Importance}
                 </span>
-              </div>&nbsp;
-              &nbsp;&nbsp;
+              </div>&nbsp;&nbsp;&nbsp;
               <div>
                 Up to - {taskDetails.Upto ? taskDetails.Upto : today}
-              </div>&nbsp;
-              <br />
+              </div>&nbsp;<br />
               {isError && (
                 <span>
                   <strong>Unable to add task</strong>
                 </span>
-              )}&nbsp;
-              <br /><br />
-              <button onClick={switchOff}>cancel</button>&nbsp;
-              <button onClick={confirmNewTask}>Confirm</button>
+              )}&nbsp;<br />
+              <Button title='cancel' click={switchOff}/>&nbsp;
+              <Button title='Confirm' click={confirmNewTask}/>
             </div>
           </div>
         </Modal>

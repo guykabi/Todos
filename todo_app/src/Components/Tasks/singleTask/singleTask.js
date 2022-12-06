@@ -4,6 +4,7 @@ import { timeRemainTask } from "../../../utils/utils";
 import { taskToDelete } from "../../../utils/ApiUtils";
 import { todoContext } from "../../../Context/TodoContext";
 import Modal from "../../../UI/Modal/Modal";
+import Button from "../../../UI/Button/Button";
 import { useMutation } from "react-query";
 
 const SingleTask = (props) => {
@@ -98,9 +99,9 @@ const SingleTask = (props) => {
           {isError ? (
             <div>
               <h3>Are you sure to delete?</h3> <br />
-              <button onClick={switchOff}>No</button>
+              <Button title='No' onClick={switchOff}/>
               &nbsp;&nbsp;
-              <button onClick={deleteTask}>Yes</button>
+              <Button title='Yes' onClick={deleteTask}/>
             </div>
           ) : (
             <div>

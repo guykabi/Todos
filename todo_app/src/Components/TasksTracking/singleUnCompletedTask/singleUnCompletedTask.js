@@ -141,6 +141,7 @@ const SingleUnCompletedTask = (props) => {
             name='Importance'
             onChange={handleRestoreTask}  /> &nbsp;
            <input type="date"
+            className='unCompletedDateInput'
             required
             name='Upto'
             ref={dateInputRef}

@@ -58,18 +58,25 @@
 } 
 
 .restoreDiv div:hover{
-background-color: rgba(160, 187, 187, 0.609);
+    background-color: rgba(160, 187, 187, 0.609);
 } 
 
 .greenRadioBtn{
     border-radius: 4px;
-outline: 3px solid green;
+    outline: 3px solid green;
 } 
 .yellowRadioBtn{
     border-radius: 4px;
-outline: 3px solid rgba(238, 238, 30, 0.823);
+    outline: 3px solid rgba(238, 238, 30, 0.823);
 } 
 .redRadioBtn{
     border-radius: 4px;
-outline: 3px solid red;
+    outline: 3px solid red;
+} 
+.unCompletedDateInput{
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+    padding: 0.4rem;
 }
