@@ -1,5 +1,4 @@
 import axios from "axios"
-import emailjs from '@emailjs/browser'
 
 const signUpUser =async (user) =>{
    const {data:res} = await axios.post('/users',user)
@@ -23,8 +22,7 @@ const emailCheck =async (email) =>{
    return res
 } 
 
-const updatePassword = async (details) => {
-   
+const updatePassword = async (details) => { 
    const {data:res} = await axios.patch('/users/'+details.id,details.body)
    return res
 }

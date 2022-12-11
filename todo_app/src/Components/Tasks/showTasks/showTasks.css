@@ -4,6 +4,7 @@
     background-color: rgba(230, 230, 219, 0.679);
     float: right;
     overflow-y: scroll;
+    color: attr(data);
 } 
 .showTaskMainDiv::-webkit-scrollbar{
   display: none;

@@ -1,5 +1,5 @@
 import "./singleTask.css";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, memo } from "react";
 import { timeRemainTask } from "../../../utils/utils";
 import { taskToDelete } from "../../../utils/ApiUtils";
 import { todoContext } from "../../../Context/TodoContext";
@@ -27,19 +27,26 @@ const SingleTask = (props) => {
     if (ctx.taskToEdit == null) {
       setIsThreeDots(true);
     }
-  }, [ctx.taskToEdit]);
+  }, [ctx.taskToEdit]); 
 
+  
+ 
+
+  const triggerTheDots = () =>{
+    if(props.openWindow ===props._id ) return props.window(null)
+    props.window(props._id)
+  }
 
   const toEdit = () => {
-    setTriggerDots(false);
-
+    //setTriggerDots(false);
+    triggerTheDots()
     //Sets the details of the choosen task to the context
     ctx.dispatch({ type: "TASKTOEDIT", payload: props })
   };
 
 
   const switchOff = () => {
-    setTriggerDots(false);
+    triggerTheDots()
     setTriggerSureToDelete(false);
   }; 
 
@@ -76,12 +83,10 @@ const SingleTask = (props) => {
       {isThreeDots && (
         <span
           className="editDots"
-          onClick={() => {
-            setTriggerDots(!triggerDots);
-          }}
+          onClick={triggerTheDots}
         ></span>
       )}
-      {triggerDots && (
+      {props.openWindow === props._id && (
         <div className="editOrDeleteDiv">
           <div onClick={toEdit}>Edit</div>
           <div onClick={() => setTriggerSureToDelete(true)}>Delete</div>
@@ -99,9 +104,9 @@ const SingleTask = (props) => {
           {isError ? (
             <div>
               <h3>Are you sure to delete?</h3> <br />
-              <Button title='No' onClick={switchOff}/>
+              <Button title='No' click={switchOff}/>
               &nbsp;&nbsp;
-              <Button title='Yes' onClick={deleteTask}/>
+              <Button title='Yes' click={deleteTask}/>
             </div>
           ) : (
             <div>
@@ -114,4 +119,4 @@ const SingleTask = (props) => {
   );
 };
 
-export default SingleTask;
+export default memo(SingleTask);

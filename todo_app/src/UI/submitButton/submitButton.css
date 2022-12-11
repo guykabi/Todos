@@ -9,6 +9,8 @@
     font-weight: bold;
     cursor: pointer;
     transition: 0.6s;
+    border-radius: 5px;
+    padding: 0.4rem;
 }
 .globalSubmitBtn:hover{
     background-color: rgb(29, 128, 164);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {BarChart,Bar,Tooltip, XAxis, YAxis, Label, Legend, LabelList} from 'recharts'
+import {BarChart,Bar,Tooltip, XAxis, YAxis, Label,LabelList} from 'recharts'
 import {overAllAvgPrecentage } from '../../../utils/utils'
 
 const TasksGraph = (props) => { 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import './completedTasks.css'
 import { getUserData } from "../../../utils/ApiUtils";
 import SingleCompleteTask from "../singleCompleteTask/singleCompleteTask";

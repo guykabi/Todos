@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {useFormik} from 'formik'
 import * as yup from 'yup'
-import { getItemFromLocal,clearField } from '../../utils/storageUtils'
+import { getItemFromLocal } from '../../utils/storageUtils'
 import { updatePassword } from '../../utils/ApiUtils'
 import {compare} from 'bcryptjs'
 import Button from '../../UI/Button/Button'
@@ -14,20 +14,17 @@ import ClipLoader from "react-spinners/ClipLoader";
 const Reset = () => {
 
  const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
+
  //Encrypted code from email to comparison 
  const detailsFromEmail = getItemFromLocal('emailCode')
  const [isMatch,setIsMatch]=useState(false) 
  const [isUpdated,setIsUpdated]=useState(false)
  const [isError,setIsError]=useState(false)
+ const [errorText,setErrorText]=useState(null)
  const navigate = useNavigate()
 
  
- const {handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        touched,
-        errors} = useFormik({
+ const {handleChange,handleBlur,handleSubmit,values, touched,errors} = useFormik({
   initialValues: {
     Password: "",
     Confirmpassword:""
@@ -60,14 +57,25 @@ const Reset = () => {
 //Sends the new password that chosen to the server
 const {mutate:resetPassword,isLoading} = useMutation(updatePassword,{
   onSuccess: (data)=>{
-    setIsUpdated(true)
-    setTimeout(()=>{
-      setIsUpdated(false)
-      navigate('/')
-    },3000)
+    if(data === 'Password already exists')
+    {
+       setIsError(true)
+       setErrorText(data)
+       setTimeout(()=>{
+        setIsError(false)
+       },3000)
+     }
+     else{
+     setIsUpdated(true)
+     setTimeout(()=>{
+       setIsUpdated(false)
+       navigate('/')
+     },3000)
+   }
   },
   onError: ()=>{
     setIsError(true)
+    setErrorText("Unable to reset password, try again")
     setTimeout(()=>{
       setIsError(false)
       navigate('/')
@@ -120,7 +128,7 @@ if(isUpdated)
           {touched.Confirmpassword&&errors.Confirmpassword ? <p>{errors.Confirmpassword}</p> : null}
         </div>
         {isLoading&&<ClipLoader color={"gray"} speedMultiplier="1" size={20}/>}
-        {isError&&<span><strong>Ubable to reset password, try again</strong></span>} <br/>
+        {isError&&<span><strong>{errorText}</strong></span>} <br/>
         <Button title='return' click={()=>navigate('/')} /><Button title='Reset' type='submit' />
         <br/> 
         

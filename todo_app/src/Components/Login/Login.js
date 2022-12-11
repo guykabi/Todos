@@ -26,10 +26,10 @@ const Login = () => {
       clearLocal()  
   }, []);
   
-  
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
- 
+    
     try{
        //Use the login hook for checking user validity
         await login(credentials);
@@ -75,8 +75,13 @@ const Login = () => {
   const sendCodeToEmail = (e) =>
   { 
     e.preventDefault()
-    checkEmail(emailForReset)
-  }
+    let obj ={...emailForReset}
+    obj.Email = emailForReset.Email
+    obj.isSendEmail = true
+    checkEmail(obj)
+  } 
+
+  
 
   return (
     <div className="mainLoginDiv">

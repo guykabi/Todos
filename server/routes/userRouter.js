@@ -63,16 +63,20 @@ router.post('/auth',async(req,resp,next)=>{ //Check is user exists - if does ret
  const {Email} = req.body
  try{
 
-   let data = await userModel.findOne({Email})
-
+   let data = await userModel.findOne({Email})  
    if(!data)  return resp.status(200).json('Email does not exist') 
-   
-    let code = await sendEmail(data)
 
-    //If there is a problem sending the email
-    if(code === 'Error') return next(new Error('Network problem'))
+   let code;
+   if(req.body.isSendEmail)
+   {  
+     code = await sendEmail(data)
+     //If there is a problem sending the email
+     if(code === 'Error') return next(new Error('Network problem'))
 
-    return resp.status(200).json(code) 
+     return resp.status(200).json(code) 
+   } 
+
+    if(data) return resp.status(200).json('Email exists')
 
    }catch(err)
     {
@@ -92,20 +96,30 @@ router.put('/:id',async(req,resp,next)=>{//Update all details except the passwor
   }
 })
 
+//Changing only the password
+router.patch('/:id',async(req,resp,next)=>{ 
 
-router.patch('/:id',async(req,resp,next)=>{//Changing only the password
-        
+        const {Password} = req.body 
+        //Gets the user to compare its current password
+        let isPasswordExists = await userModel.find({_id:req.params.id})  
+          
+        //Checks if the password already exists 
+        let ifMatch = bcrypt.compare(Password,isPasswordExists[0].Password)
+        if(ifMatch) return resp.status(200).json('Password already exists')
+
+
        //Crypt the changed password
        const salt = await bcrypt.genSalt(10)
-       const passwordHash = await bcrypt.hash(req.body.Password,salt)
-      //Update only the password
-      try{  
+       const passwordHash = await bcrypt.hash(Password,salt)
+    
+        try{  
+              //Insert the new password
               let data = await userModel.updateOne( { _id:req.params.id} , { $set: { Password:passwordHash } })
               if(data) return resp.status(200).json('Updated')
-     }catch(err)
-     {
-           next(new Error('Error', err))
-     }
+       }catch(err)
+          {
+              next(new Error('Error', err))
+          }
 })
 
 module.exports = router

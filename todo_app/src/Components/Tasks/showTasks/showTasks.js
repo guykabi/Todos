@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect,useCallback } from "react";
 import { todoContext } from "../../../Context/TodoContext";
 import SingleTask from "../singleTask/singleTask";
 import "./showTasks.css";
@@ -12,6 +12,7 @@ const ShowTasks = () => {
   const [allUserTasks, setAllUserTasks] = useState(null); //All the tasks of the user that render into singleTask components
   const userData = getItemFromLocal("userData")
   const [countTasks, setCountTasks] = useState(0);
+  const [isOpenWindow,setIsOpenWindow]=useState(null)
 
 
   
@@ -32,7 +33,12 @@ const ShowTasks = () => {
       let results = tasks.filter((t) => t.Importance === e.target.value);
       setAllUserTasks(results);
     }
-  };
+  };  
+
+  const handleOpenDotsTask = useCallback((e) =>{
+    if(!e) return setIsOpenWindow(null)
+    setIsOpenWindow(e)
+  },[isOpenWindow])
 
   const serachTask = (e) => {
     //Sorting the tasks by colors of importance
@@ -47,7 +53,7 @@ const ShowTasks = () => {
 
   return (
     <>
-      <div className="showTaskMainDiv">
+      <div className="showTaskMainDiv"  data="red">
         <h2>
           {userData.data.Name}'s tasks {`(${countTasks})`}
         </h2>
@@ -95,7 +101,7 @@ const ShowTasks = () => {
         <div className="allTasks">
           {allUserTasks &&
             allUserTasks.map((task, index) => {
-              return <SingleTask key={index} {...task} />;
+              return <SingleTask key={index} window={handleOpenDotsTask} openWindow={isOpenWindow} {...task} />;
             })}
         </div>
       </div>

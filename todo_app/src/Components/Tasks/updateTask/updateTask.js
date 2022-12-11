@@ -15,6 +15,7 @@ const UpdateTask = (props) => {
   const [enableBtn, setEnableBtn] = useState(false); //Control the submit button activeness
   const [whenCompleteMark, setWhenCompleteMark] = useState(false);
   const [maxDaysLimit,setMaxDaysLimit]=useState(null)
+  const [triggerTitleText,setTriggerTitleText]=useState(false)
   const today = moment().format("YYYY-MM-DD"); //Date of today for the date input
 
 
@@ -63,9 +64,9 @@ const UpdateTask = (props) => {
   //updates the new updateDetails state which sends only
   //the fields that has changed to the server
   const handleTaskChange = (e) => {
-    console.log(updateDetails)
+    
     const { name, value } = e.target;
-
+    if(triggerTitleText === false) setTriggerTitleText(true)
     //Update only the current data that present to the user within the fields
     setCurrentDetails({ ...currentDetails, [name]: value });
 
@@ -82,6 +83,7 @@ const UpdateTask = (props) => {
         //When there is nothing changed again -
         //Unable the submit button
         if (Object.keys(updateDetails).length === 1) {
+          setTriggerTitleText(false)
           return setEnableBtn(false) //Unable the submit button
         }
 
@@ -89,6 +91,7 @@ const UpdateTask = (props) => {
           setUpdateDetails(null) //Clears the updateDetails state when switch back to false
           setCurrentDetails(ctx.taskToEdit) //Showing back the origin task's details
           setWhenCompleteMark(false) //Switch on the disabled mode on each field
+          setTriggerTitleText(false)
           return setEnableBtn(false)
         }
       }
@@ -155,8 +158,9 @@ const UpdateTask = (props) => {
     
     //Trigger the mutation
     update(obj)
-  }; 
+  };  
 
+  
 
   const options = ["Education", "Free time", "Work", "Household management"];
   //Rendering options tags to the select input
@@ -173,7 +177,7 @@ const UpdateTask = (props) => {
       <br />
       {currentDetails && (
         <form onSubmit={sendUpdate} className="editForm">
-          <h2>Any change to make ?</h2><br/>
+          <h2>{triggerTitleText?'Seems like yes...':'Any change to make ?'}</h2><br/>
           <label htmlFor="Topic">Topic: </label>
           <select
           className="updateSelectInput"
