@@ -15,9 +15,16 @@
   padding-top: 1px;
   text-align: center;
   background-color: rgb(228, 86, 86);
+} 
+
+.topNav h2{
+  font-weight: 700;
 }
 
 .tokenErrorMessage{
+  height: 100vh;
   text-align: center;
-  margin-top: 10rem;
+  margin-top: 10rem; 
+  background: linear-gradient(to right  top, rgba(125, 106, 172, 0.531) 45%,rgba(158, 186, 192, 0.641) 50%);
+
 }

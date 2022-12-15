@@ -12,8 +12,9 @@
 
   .editForm{
     margin: 0 auto;
+    margin-left: 7rem;
     width: 70%;
-    padding: 2rem 1rem 4rem 1rem;
+    padding: 2rem 2rem 4rem 2rem;
     border-left: 1px solid rgba(0, 0, 0, 0.541);
     border-right: 1px solid rgba(0, 0, 0, 0.541);
     border-top: 1px solid rgba(0, 0, 0, 0.541);
@@ -43,6 +44,7 @@
     font-weight: bold;
     margin-left: -10%;
     margin-right: 4%;
+    
   }
   
   .greenRadio{

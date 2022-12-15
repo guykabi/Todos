@@ -213,7 +213,7 @@ const overAllAvgPrecentage = (tasks) =>{
         obj.Importance = color
         obj.fill = color 
 
-        graphData.push(obj)
+       return graphData.push(obj)
     })
         return graphData
 }

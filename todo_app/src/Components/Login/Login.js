@@ -42,7 +42,7 @@ const Login = () => {
             
      }catch(err)
        {     
-             //Error taking care in the login hook
+             //Error is already taken care in the login hook
              console.log('Error handled')
        }
    
@@ -86,9 +86,10 @@ const Login = () => {
   return (
     <div className="mainLoginDiv">
       <div className="formDiv">
-        <h2>Login</h2>
+        <h2 className="loginTitle">Todos Login</h2> <br/>
         <form onSubmit={handleLoginSubmit}>
           <input
+            id="slider-email" class="slide-in-email"
             type="email"
             name="Email"
             placeholder="Email"
@@ -102,6 +103,7 @@ const Login = () => {
           />
           <br /> <br />
           <input
+          id="slider-password" class="slide-in-password"
             type="password"
             name="Password"
             placeholder="Password"

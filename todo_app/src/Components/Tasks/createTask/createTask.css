@@ -36,9 +36,9 @@
 } 
 .textArea::placeholder{
  color: rgba(0, 0, 0, 0.577);
- padding-left:6rem;
- padding-top: 1rem;
- font-size: large;
+ padding-left:1rem;
+ padding-top: 0.5rem;
+ font-size: medium;
 }
 
 .importanceLevel{
@@ -73,7 +73,7 @@
   background-color: white;
   width: fit-content;
   height: fit-content;
-  padding: 4px;
+  padding: 5%;
   border: 1px solid black;
   font-size: xx-small;
 }

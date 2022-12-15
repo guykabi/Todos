@@ -4,15 +4,16 @@ import {overAllAvgPrecentage } from '../../../utils/utils'
 
 const TasksGraph = (props) => { 
    
-    const [completedTasks,setCompletedTasks]=useState(null)
-
-    useEffect(()=>{
-       let avg = overAllAvgPrecentage(props.taskData)   
-       setCompletedTasks(avg)
-    },[])  
+  const [completedTasks,setCompletedTasks]=useState(null)
+  
+  useEffect(()=>{
+     let avg = overAllAvgPrecentage(props.taskData)   
+     setCompletedTasks(avg)
+  },[])  
    
 
-    const CustomTooltip = () => {   
+    const CustomTooltip = () => {  
+      // Message when hover above each grpah column 
         return (
           <div className="custom-tooltip">
             <p style={{fontSize:'small'}}>
@@ -24,15 +25,17 @@ const TasksGraph = (props) => {
 
   return (
     <div className='mainGraphDiv'>
-       {completedTasks&& <BarChart width={800} height={400} margin={{left:260,bottom:40}} data={completedTasks}>
+       {completedTasks&& <BarChart width={800} height={400} margin={{left:360,bottom:40}} fontWeight="bold" data={completedTasks}>
        <Bar dataKey="avgCompletionPrecentage" fill >
         <LabelList dataKey="avgCompletionPrecentage" fill='black' position="inside"/>
        </Bar>
-       <Tooltip content={<CustomTooltip />} />
+       <Tooltip content={<CustomTooltip />} cursor={{fill: 'none'}} />
        <XAxis dataKey="Importance"> 
        <Label value="Importance level" offset={0} position="bottom" />
        </XAxis>
-       <YAxis label={{ value: 'Avg completion precentage', angle: -90, position:"left" }} />
+       <YAxis domain={[0, 100]}>
+       <Label value="Avg time percentage to complete" angle={-90} position='insideBottomLeft' />
+       </YAxis>
      </BarChart>}
     </div>
   )

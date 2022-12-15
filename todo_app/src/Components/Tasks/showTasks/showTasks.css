@@ -8,6 +8,10 @@
 } 
 .showTaskMainDiv::-webkit-scrollbar{
   display: none;
+} 
+
+.showTaskMainDiv h2{
+  font-weight: 400;
 }
 input[type=radio] {
     border: 1px solid rgb(108, 130, 228);
@@ -37,6 +41,18 @@ input[type=radio] {
     padding: 0.6rem;
     border: none;
     border-bottom: 1px solid black;
+  } 
+
+  .timeLineDate{
+    z-index: 10;
+    position: relative;
+    margin-left: -4rem;
+    margin-top: -40%;
+  }
+
+  .icon{
+    font-size: x-large;
+    cursor: none;
   }
   
   

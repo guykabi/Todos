@@ -1,8 +1,9 @@
 .mainSingleTask{
     margin: 0 auto;
+    margin-left: 2rem;
     text-align: center;
     padding: 8px;
-    width: 70%;
+    width: 90%;
     height: fit-content;
     font-size: 80%;
     font-weight: bold;

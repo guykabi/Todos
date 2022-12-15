@@ -1,9 +1,13 @@
+import "./showTasks.css";
 import React, { useContext, useState, useEffect,useCallback } from "react";
 import { todoContext } from "../../../Context/TodoContext";
 import SingleTask from "../singleTask/singleTask";
-import "./showTasks.css";
 import { customFilter } from "../../../utils/utils";
 import {setItemToLocal,getItemFromLocal} from '../../../utils/storageUtils'
+import {VerticalTimeline, VerticalTimelineElement} from 'react-vertical-timeline-component'
+import 'react-vertical-timeline-component/style.min.css';
+
+
 
 
 const ShowTasks = () => {
@@ -99,10 +103,25 @@ const ShowTasks = () => {
           </label>
         </div>
         <div className="allTasks">
-          {allUserTasks &&
-            allUserTasks.map((task, index) => {
-              return <SingleTask key={index} window={handleOpenDotsTask} openWindow={isOpenWindow} {...task} />;
-            })}
+        <VerticalTimeline layout="1-column-right'" >
+            {allUserTasks && 
+             allUserTasks.map((task, index) => {
+              return <VerticalTimelineElement 
+              
+              icon='📆'
+              iconClassName='icon'
+              iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+              intersectionObserverProps={{rootMargin: '0px 0px 10px 0px'}}
+              date={task.Upto} 
+              style={{width:'90%',margin:'0px 0px 5px 0px'}}
+              contentStyle={{ background: 'none' }}
+              dateClassName='timeLineDate'
+               >
+                  <SingleTask key={index} window={handleOpenDotsTask} openWindow={isOpenWindow} {...task} />;
+               </VerticalTimelineElement>
+              })
+            }
+        </VerticalTimeline>
         </div>
       </div>
     </>

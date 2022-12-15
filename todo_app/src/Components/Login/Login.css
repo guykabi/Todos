@@ -11,23 +11,84 @@
 
 .formDiv{
     padding: 1rem;
+    padding-top: 3rem;
     text-align: center; 
     margin: 0 auto;
     width: 25rem;
     border-radius: 5px;
     box-shadow: 1px 1px 4px 4px rgba(57, 55, 55, 0.350);
 
+}  
+
+.loginTitle {
+    animation: fadeInAnimation 0.6s linear;
+    
+  }
+  
+  @keyframes fadeInAnimation {
+    0% {
+      font-size: 1%;
+      opacity: 0;
+    }
+    100% {
+      font-size: x-large;
+      opacity: 1;
+    }
+  } 
+
+
+#slider-email{
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
 } 
-.formDiv input{
+
+#slider-password{
+    transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+}
+
+
+.slide-in-email , .slide-in-password{
     width: 60%;
     height: 1.5rem;
     background-color: rgba(255, 255, 255, 0);
     border: none;
     border-bottom: 1px solid black;
 }  
-.formDiv input::placeholder{
+.slide-in-email::placeholder , .slide-in-password::placeholder{
     color: rgba(0, 0, 0, 0.752);
+}  
+
+
+.slide-in-email {
+    animation: slide-in-email 1s forwards;
+    -webkit-animation: slide-in-email 1s forwards;
+} 
+
+.slide-in-password {
+    animation: slide-in-password 1s forwards;
+    -webkit-animation: slide-in-password 1s forwards;
 }
+
+    
+@keyframes slide-in-email {
+    0%{opacity: 0;}
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@-webkit-keyframes slide-in-email  {
+    100% { -webkit-transform: translateX(0%); }
+}  
+
+@keyframes slide-in-password {
+    0%{opacity: 0;}
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@-webkit-keyframes slide-in-password  {
+    100% { -webkit-transform: translateX(0%); }
+} 
+
 
 
 .formDiv a{
@@ -57,4 +118,4 @@
 } 
 .toResetBtn:hover{
     transform: scale(1.05);
-}
+} 

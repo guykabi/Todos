@@ -8,7 +8,6 @@ import Button from "../../../UI/Button/Button";
 import { useMutation } from "react-query";
 
 const SingleTask = (props) => {
-  const [triggerDots, setTriggerDots] = useState(false);
   const [triggerSureToDelete, setTriggerSureToDelete] = useState(false);
   const [isThreeDots, setIsThreeDots] = useState(true);
   const [isError, setIsError] = useState(true);
