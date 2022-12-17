@@ -14,6 +14,10 @@
     border: 1px black solid;
     border-radius: 8px;
     padding: 2rem;
+} 
+
+.createTaskTitle{
+  font-weight: 400;
 }
 
 .createSelectInput{
@@ -51,7 +55,7 @@
 .greenRadio{
     cursor: default;
     border-radius: 40%;
-    margin-right: 5px;
+    margin-right: 10%;
     background-color: green;
     font-size: x-small;
     padding: 1px;
@@ -66,7 +70,6 @@
 .greenRadio:hover + .greenColorData{
   display: block;
   z-index: 10;
-  margin-left: 100px;
   position: absolute;
   margin-top: -6%;
   margin-left: 10%;
@@ -81,7 +84,7 @@
 .yellowRadio{
   cursor: default;
     border-radius: 40%;
-    margin-right: 5px;
+    margin-right: 10%;
     background-color:rgb(220, 220, 80);
     font-size: x-small;
     padding: 1px;
@@ -94,7 +97,6 @@
   .yellowRadio:hover + .yellowColorData{
     display: block;
     z-index: 10;
-    margin-left: 100px;
     position: absolute;
     margin-top: -6%;
     margin-left: 14%;
@@ -109,7 +111,7 @@
   .redRadio{
     cursor: default;
     border-radius: 40%;
-    margin-right: 5px;
+    margin-right: 10%;
     background-color:red;
     font-size: x-small;
     padding: 1px;
@@ -123,7 +125,6 @@
   .redRadio:hover + .redColorData{
     display: block;
     z-index: 10;
-    margin-left: 100px;
     position: absolute;
     margin-top: -6%;
     margin-left: 18%;

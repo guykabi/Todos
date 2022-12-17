@@ -103,11 +103,11 @@ const ShowTasks = () => {
           </label>
         </div>
         <div className="allTasks">
-        <VerticalTimeline layout="1-column-right'" >
+        <VerticalTimeline layout="1-column-left" >
             {allUserTasks && 
              allUserTasks.map((task, index) => {
               return <VerticalTimelineElement 
-              
+              key={index}
               icon='📆'
               iconClassName='icon'
               iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}

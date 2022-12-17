@@ -1,15 +1,15 @@
 .mainSingleTask{
     margin: 0 auto;
     margin-left: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
     text-align: center;
-    padding: 8px;
+    padding: 1rem;
     width: 90%;
     height: fit-content;
     font-size: 80%;
     font-weight: bold;
     border-radius: 8px;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
     text-align: left;
     transition: 0.4s;
 } 

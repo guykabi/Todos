@@ -8,17 +8,17 @@
 }
 
 .topNav{
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
   height: 4rem;
-  padding-top: 1px;
+  margin-top: -28px;
   text-align: center;
   background-color: rgb(228, 86, 86);
 } 
 
 .topNav h2{
-  font-weight: 700;
+  font-weight: 500; 
+  font-size: xx-large;
 }
 
 .tokenErrorMessage{

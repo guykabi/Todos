@@ -134,15 +134,18 @@ const CreateTask = () => {
       )}
       {isNewTask && (
         <div className="taskForm">
-          <h2>What do you up next?</h2>
+          <h2 className="createTaskTitle">What do you up next?</h2>
           <br /> <br />
+
           <form onSubmit={sendTask}>
+
             <label className="selectTopicLabel" htmlFor="Topic">
               Select the topic:
             </label>
             <select required className="createSelectInput" onChange={handleTask} id="Topic" name="Topic">
               {selectField}
             </select>&nbsp; <br /> <br />
+
             <textarea
               name="Task"
               onChange={handleTask}
@@ -153,6 +156,7 @@ const CreateTask = () => {
               placeholder="What is the task?"
               required
             />&nbsp; <br /> <br />
+
             <span className="importanceLevel">Importance level:</span>
             <span className="greenRadio">gg</span>
             <span className="greenColorData">
@@ -164,8 +168,8 @@ const CreateTask = () => {
               value="Green"
               name="Importance"
               required
-            />
-            &nbsp;&nbsp;
+            />&nbsp;&nbsp;
+
             <span className="yellowRadio">gg</span>
             <span className="yellowColorData">
               <strong>Yellow</strong> means - task that need to be completed<br />
@@ -176,8 +180,8 @@ const CreateTask = () => {
               type="radio"
               value="Yellow"
               name="Importance"
-            />
-            &nbsp;&nbsp;
+            />&nbsp;&nbsp;
+
             <span className="redRadio">gg</span>
             <span className="redColorData">
               <strong>Red</strong> means - task that need to be completed<br />
@@ -189,6 +193,7 @@ const CreateTask = () => {
               value="Red"
               name="Importance"
             />&nbsp;<br /> <br />
+
             <label className="dateLable" htmlFor="date">
              Date to complete:
             </label>
@@ -203,8 +208,10 @@ const CreateTask = () => {
               max={maxDaysLimit}
               required
             />&nbsp; <br /> <br />
+
             <Button title='Return' click={() => {setIsNewTask(false)}}/>&nbsp;
             <Button title='Make me task' type="submit"/>
+
           </form>
         </div>
       )}

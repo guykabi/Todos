@@ -66,11 +66,14 @@ const UpdateTask = (props) => {
   const handleTaskChange = (e) => {
     
     const { name, value } = e.target;
+    
+    //Change the form headline if there was any change
     if(triggerTitleText === false) setTriggerTitleText(true)
+
     //Update only the current data that present to the user within the fields
     setCurrentDetails({ ...currentDetails, [name]: value });
 
-    if (ctx.taskToEdit[name].toString() === value || !updateDetails) {
+    if (ctx.taskToEdit[name].toString() === value) {
 
       if (updateDetails) {
 
@@ -97,8 +100,8 @@ const UpdateTask = (props) => {
       }
     }
 
-    //If the user choose/change a value that isn't exsits yet
-    if (ctx.taskToEdit[name] !== value) {
+    //If the user choose/change to a value that does not exsits yet
+    if (ctx.taskToEdit[name] !== value && !value.endsWith(" ")) {
       if (value === "true") {
 
          //Prepare the new object to send to the server
@@ -177,10 +180,12 @@ const UpdateTask = (props) => {
       <br />
       {currentDetails && (
         <form onSubmit={sendUpdate} className="editForm">
-          <h2>{triggerTitleText?'Seems like yes...':'Any change to make ?'}</h2><br/>
+
+          <h2 className="updateTaskTitle">{triggerTitleText?'Seems like yes...':'Any change to make ?'}</h2><br/>
+
           <label htmlFor="Topic">Topic: </label>
           <select
-          className="updateSelectInput"
+            className="updateSelectInput"
             required
             value={currentDetails.Topic}
             disabled={whenCompleteMark}
@@ -189,12 +194,14 @@ const UpdateTask = (props) => {
             name="Topic"
           >
             {selectField}
-          </select>&nbsp;
-          <br /><br />
-          <label htmlFor="Task">Task: </label>
-          <input
-            type="text"
+          </select>&nbsp;<br /><br />
+
+          <label htmlFor="Task" className="taskTitle">Task: </label> <br/>
+          <textarea
+          className="textAreaUpdate"
+            style={{ resize: "none", width: "50%" }}
             required
+            placeholder="What is the task?"
             id="Task"
             disabled={whenCompleteMark}
             onChange={handleTaskChange}

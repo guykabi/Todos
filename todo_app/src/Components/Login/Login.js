@@ -82,40 +82,36 @@ const Login = () => {
   } 
 
   
-
   return (
     <div className="mainLoginDiv">
       <div className="formDiv">
         <h2 className="loginTitle">Todos Login</h2> <br/>
         <form onSubmit={handleLoginSubmit}>
           <input
-            id="slider-email" class="slide-in-email"
+            id="slider-email" 
+            class="slide-in-email"
             type="email"
             name="Email"
             placeholder="Email"
             required
             onChange={(e) =>
-              setCredentials({
-                ...credentials,
-                [e.target.name]: e.target.value,
-              })
+            setCredentials({
+            ...credentials,[e.target.name]: e.target.value,})
             }
           />
           <br /> <br />
           <input
-          id="slider-password" class="slide-in-password"
+            id="slider-password" 
+            class="slide-in-password"
             type="password"
             name="Password"
             placeholder="Password"
             required
             onChange={(e) =>
-              setCredentials({
-                ...credentials,
-                [e.target.name]: e.target.value,
-              })
+            setCredentials({
+            ...credentials,[e.target.name]: e.target.value,})
             }
-          />
-          <br />
+          /><br />
           {isLoading && (
             <>
              <ClipLoader color={"gray"} speedMultiplier="1" size={30} />
@@ -137,6 +133,7 @@ const Login = () => {
           <br/>
             <form onSubmit={sendCodeToEmail}>
               <input 
+              className="slide-in-email"
               required
               ref={inputRef}
               type='email' 
