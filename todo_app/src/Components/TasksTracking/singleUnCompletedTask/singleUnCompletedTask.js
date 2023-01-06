@@ -129,18 +129,21 @@ const SingleUnCompletedTask = (props) => {
             value="Green" 
             name='Importance'
             onChange={handleRestoreTask} />
+
            <input 
             className='yellowRadioBtn'
             type="radio"
             value="Yellow" 
             name='Importance'
             onChange={handleRestoreTask}  /> 
+
            <input
             className='redRadioBtn'
             type="radio"
             value="Red"
             name='Importance'
             onChange={handleRestoreTask}  /> &nbsp;
+
            <input type="date"
             className='unCompletedDateInput'
             required
@@ -151,6 +154,7 @@ const SingleUnCompletedTask = (props) => {
             onChange={handleRestoreTask} /> <br />
 
            {isError&&<span>Error while sending!</span>} <br/>
+           
            <Button type='submit' title='Restore task'/>
            <Button click={switchBack} title='Return'/>
            </form>
