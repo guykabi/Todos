@@ -72,6 +72,7 @@ const SingleTask = (props) => {
   };
 
   return (
+    <>
     <div
       className="mainSingleTask"
       style={{
@@ -115,6 +116,7 @@ const SingleTask = (props) => {
         </Modal>
       )}
     </div>
+    </>
   );
 };
 

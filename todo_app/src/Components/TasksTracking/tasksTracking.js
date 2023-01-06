@@ -6,11 +6,9 @@ import {Outlet} from 'react-router-dom'
 const TasksTracking = () => { 
  
   return (
-    <>
     <div className='taskTrackingMainDiv'>
          <Outlet/>
     </div>
-    </>
   )
 }
 

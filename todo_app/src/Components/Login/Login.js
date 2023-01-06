@@ -127,7 +127,7 @@ const Login = () => {
          >Forgot password?
          </span>&nbsp;&nbsp;
 
-         <span className="linkTo"><Link to={'signup'}>Don't have an account?</Link></span>
+         <span className="linkTo"><Link to={'signup'}>Create account</Link></span>
           <br/>
         {triggerEmailWindowToReset&&<div>
           <br/>

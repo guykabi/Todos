@@ -23,7 +23,8 @@ const SingleCompleteTask = (props) => {
       },[])
 
   return (
-    <div className='oneTask'>
+        <>
+          <div className='oneTask'>
             <h3>{props.taskData.Topic}</h3> 
             <h4>{props.taskData.Task}</h4>
               <div>
@@ -31,6 +32,7 @@ const SingleCompleteTask = (props) => {
                 Completed in: {timeTaskPassed&&timeTaskPassed}
               </div>
             </div>
+        </>
   )
 }
 

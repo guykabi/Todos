@@ -107,6 +107,7 @@ const SingleUnCompletedTask = (props) => {
       } 
 
   return (
+    <>
     <div className='oneUnTask'>
       {switchToSelectDate?<div className='showtask'>
            {!props.taskData.SecondChance&&<span className='editDotsUn' onClick={()=>{setTriggerDots(!triggerDots)}}></span>}
@@ -155,6 +156,7 @@ const SingleUnCompletedTask = (props) => {
            </form>
           </div>}
     </div>
+    </>
   )
 }
 
