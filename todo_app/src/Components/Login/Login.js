@@ -21,9 +21,7 @@ const Login = () => {
 
     //Checks if there is any user data on the localStorage
     if (!getItemFromLocal("userData")) return
-      
-      //Clear the user data when user coming back to the login page - backup to the logout from Home page
-      clearLocal()  
+        clearLocal()  
   }, []);
   
 
@@ -49,7 +47,7 @@ const Login = () => {
   }  
 
   const {mutate:checkEmail} = useMutation(emailCheck,{
-    onSuccess:async (data)=>{
+      onSuccess:async (data)=>{
       if(data === 'Email does not exist')
       {
         inputRef.current.value = ''

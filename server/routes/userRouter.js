@@ -114,7 +114,11 @@ router.patch('/:id',async(req,resp,next)=>{
     
         try{  
               //Insert the new password
-              let data = await userModel.updateOne( { _id:req.params.id} , { $set: { Password:passwordHash } })
+              let data = await userModel
+              .updateOne( 
+                { _id:req.params.id},
+                { $set: { Password:passwordHash } })
+
               if(data) return resp.status(200).json('Updated')
        }catch(err)
           {

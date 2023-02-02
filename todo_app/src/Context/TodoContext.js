@@ -55,7 +55,7 @@ export const TodoContextProvider = ({children})=>{
     taskToEdit:null,
     taskJustAdded:null
    })
-   console.log("Tasks:" ,state)
+   
    return(
     <todoContext.Provider value={{...state,dispatch}}>
        {children}

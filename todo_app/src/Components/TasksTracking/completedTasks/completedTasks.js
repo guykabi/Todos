@@ -19,13 +19,16 @@ const CompletedTasks = () => {
 
    if(userDetails)
    {
-    showMoreAppearenceRule = (userDetails.TasksCompleted.length > 4  &&  userDetails.TasksCompleted.length > numOfTasks)
+    showMoreAppearenceRule =(
+      userDetails.TasksCompleted.length > 4
+      &&userDetails.TasksCompleted.length > numOfTasks
+     )
    }
  
 
   const {isError,isLoading} =useQuery('userCompleted',
     ()=>getUserData(userData.data._id),{
-
+      
         onSuccess:(data)=>{
           setUserDetails(data)
          }

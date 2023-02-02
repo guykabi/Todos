@@ -18,9 +18,9 @@ const UnCompletedTasks = () => {
    
    const {isError,isLoading} =useQuery('userUncompleted',()=>getUserData(userData.data._id),
    {
-    onSuccess:(data)=>{
-      setUserDetails(data)
-    }
+     onSuccess:(data)=>{
+       setUserDetails(data)
+     }
    })
 
    if(isLoading)

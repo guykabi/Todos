@@ -105,7 +105,7 @@ if(isUpdated)
            placeholder='Reset code'
            onChange={checkEqualToCode}/>
         </div> <br/>
-       <div className='input-container'>
+        <div className='input-container'>
           <input    
           disabled={!isMatch}
           type="password" 
@@ -116,6 +116,7 @@ if(isUpdated)
           onBlur={handleBlur}/>
           {touched.Password&&errors.Password ? <p>{errors.Password}</p> : null}
         </div>
+
         <div className='input-container'>
           <input 
           disabled={!isMatch} 
@@ -125,11 +126,16 @@ if(isUpdated)
           value={values.Confirmpassword}
           onChange={handleChange}
           onBlur={handleBlur}/>
-          {touched.Confirmpassword&&errors.Confirmpassword ? <p>{errors.Confirmpassword}</p> : null}
+          {touched.Confirmpassword&&errors.Confirmpassword 
+          ?<p>{errors.Confirmpassword}</p> 
+          : null}
         </div>
+
         {isLoading&&<ClipLoader color={"gray"} speedMultiplier="1" size={20}/>}
         {isError&&<span><strong>{errorText}</strong></span>} <br/>
-        <Button title='return' click={()=>navigate('/')} /><Button title='Reset' type='submit' />
+
+        <Button title='return' click={()=>navigate('/')} />
+        <Button title='Reset' type='submit'/>
         <br/> 
         
        </form>

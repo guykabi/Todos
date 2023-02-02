@@ -33,7 +33,7 @@ const CreateTask = () => {
     {
       //Returns the max value the calendar will enable 
       //choosing dates - base on importance level
-      let dateLimit =  handleTimeLimit(value,today)
+      let dateLimit = handleTimeLimit(value,today)
 
       //Updates the max key on the date input
       setMaxDaysLimit(dateLimit)

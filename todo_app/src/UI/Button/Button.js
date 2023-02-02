@@ -4,7 +4,7 @@ import './Button.css'
 const Button = (props) => {
   
   const clickEvent = ()=>{
-    //Trigger only if there is onClick event passed in props
+    //Trigger only if there is onClick event passed via props
      if(props.click)
      {
        props.click()
@@ -12,8 +12,11 @@ const Button = (props) => {
   } 
 
   return (
-    <button className={props.disable?'whenDisable':'globalBtn'} type={props.type&&props.type} disabled={props.disable} onClick={clickEvent}>
-        {props.title}
+    <button className={props.disable?'whenDisable':'globalBtn'} 
+    type={props.type&&props.type} 
+    disabled={props.disable} 
+    onClick={clickEvent}>
+    {props.title}
     </button>
   )
 }

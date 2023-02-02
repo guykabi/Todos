@@ -100,6 +100,7 @@ const Signup = () => {
     <div className='mainSignupDiv'>
       <form className='form-container' onSubmit={handleSubmit}>
         <div className='input-container'>
+
           <input 
            name='Name'
            type="text"
@@ -109,6 +110,7 @@ const Signup = () => {
            onBlur={handleBlur}/>
            {touched.Name&&errors.Name ? <p>{errors.Name}</p> : null}
         </div> 
+
         <div className='input-container'>
           <input 
           name='Username'
@@ -119,6 +121,7 @@ const Signup = () => {
           onBlur={handleBlur} />
           {touched.Username&&errors.Username ? <p>{errors.Username}</p> : null}
         </div>
+
         <div className='input-container'>
           <input    
           type="password" 
@@ -129,6 +132,7 @@ const Signup = () => {
           onBlur={handleBlur}/>
           {touched.Password&&errors.Password ? <p>{errors.Password}</p> : null}
         </div>
+
         <div className='input-container'>
           <input  
           type="password" 
@@ -139,6 +143,7 @@ const Signup = () => {
           onBlur={handleBlur}/>
           {touched.Confirmpassword&&errors.Confirmpassword ? <p>{errors.Confirmpassword}</p> : null}
         </div>
+
         <div className='input-container'>
           <input 
           name='Email'
@@ -149,8 +154,17 @@ const Signup = () => {
           onBlur={handleBlur} />
           {errors.Email && touched.Email ? <p>{errors.Email}</p> : null}
         </div> 
+
         {isError&& <p style={{color:'red'}}>{errorText}</p>}
-        <SubmitButton type='submit' title='submit'/><Button  title='Return' click={toLogin}/>
+        
+        <SubmitButton 
+        type='submit' 
+        title='submit'/>
+
+        <Button 
+        title='Return' 
+        click={toLogin}/>
+
       </form>
       </div>
     </>

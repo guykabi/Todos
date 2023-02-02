@@ -12,8 +12,12 @@ const SubmitButton = (props) => {
       } 
 
   return (
-    <button className='globalSubmitBtn' type={props.type&&props.type} disabled={props.disable} onClick={clickEvent}>
-      {props.title}
+    <button 
+    className='globalSubmitBtn' 
+    type={props.type&&props.type} 
+    disabled={props.disable} 
+    onClick={clickEvent}>
+    {props.title}
     </button>
   )
 }
