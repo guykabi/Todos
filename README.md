@@ -1,5 +1,5 @@
 The 'Todos' provides a fast and accessible platform for managing a daily, weekly and monthly tasks.  
-Each task has it's own time frame which it must be complete.
+    Each task has it's own time frame which it must be complete.
 Categorizes by level of importance and color to distinguish between. 
 Each task of course can be edit in any field, change time frame to finish it in and delete it!  
 
@@ -12,7 +12,6 @@ there the user can see all the uncompleted tasks, it origin time to complete and
 Every uncompleted task has one chance only to be restored! 
 
 The project was developed with React + Node.js + MongoDB. 
-State managment was done with React Context API in order to demonstare a self sustaining app,  
-which minimizes calls to the server and keeping it's data fresh as possible! 
+State managment was done with React Context API in order to demonstare a self sustaining app,  which minimizes calls to the server and keeping it's data fresh as possible! 
 
 
