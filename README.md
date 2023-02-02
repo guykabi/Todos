@@ -12,6 +12,6 @@ there the user can see all the uncompleted tasks, it origin time to complete and
 Every uncompleted task has one chance only to be restored! 
 
 The project was developed with React + Node.js + MongoDB. 
-State managment was done with React Context API in order to demonstare a self sustaining app,  which minimizes calls to the server and keeping it's data fresh as possible! 
+State managment was done with React Context API + React Query in order to demonstare a self sustaining app,  which minimizes calls to the server and keeping it's data fresh as possible! 
 
 
